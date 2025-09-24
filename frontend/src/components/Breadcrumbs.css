@@ -1,0 +1,66 @@
+/* Breadcrumbs Component */
+.breadcrumbs {
+  background: #f8f9fa;
+  padding: 15px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-link {
+  color: #2a5298;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.breadcrumb-link:hover {
+  color: #1e3c72;
+  background: rgba(42, 82, 152, 0.1);
+  text-decoration: none;
+}
+
+.breadcrumb-separator {
+  color: #6c757d;
+  font-weight: 500;
+  margin: 0 4px;
+}
+
+.breadcrumb-current {
+  color: #495057;
+  font-weight: 500;
+  padding: 4px 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .breadcrumbs {
+    padding: 12px 0;
+  }
+  
+  .breadcrumbs-list {
+    font-size: 0.85rem;
+    gap: 6px;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumbs {
+    padding: 10px 0;
+  }
+  
+  .breadcrumbs-list {
+    font-size: 0.8rem;
+  }
+}

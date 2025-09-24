@@ -1,0 +1,137 @@
+<svg width="180" height="70" viewBox="0 0 180 70" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient futuriste amélioré -->
+    <linearGradient id="futuristicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a2463;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f5ff;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient texte doux -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4b5563;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6b7280;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Effet glow doux -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.8" result="softBlur"/>
+      <feMerge>
+        <feMergeNode in="softBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Ombre ultra premium -->
+    <filter id="ultraShadow" x="-100%" y="-100%" width="300%" height="300%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#3b82f6" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#06b6d4" flood-opacity="0.3"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.2"/>
+    </filter>
+    
+    <!-- Effet métallique -->
+    <filter id="metallic" x="-50%" y="-50%" width="200%" height="200%">
+      <feSpecularLighting result="specOut" in="SourceGraphic" specularConstant="2" specularExponent="25" lighting-color="white">
+        <fePointLight x="-50" y="-50" z="200"/>
+      </feSpecularLighting>
+      <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+      <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+    </filter>
+  </defs>
+  
+  <!-- Structure principale améliorée -->
+  <g transform="translate(8, 10)">
+    <!-- Base hexagonale premium -->
+    <polygon points="30,5 50,15 50,35 30,45 10,35 10,15" 
+             fill="url(#futuristicGradient)" 
+             filter="url(#ultraShadow)"
+             stroke="#00f5ff" 
+             stroke-width="1.5" 
+             opacity="0.98"/>
+    
+    <!-- Couches intérieures multiples -->
+    <polygon points="30,8 47,16 47,32 30,42 13,32 13,16" 
+             fill="none" 
+             stroke="rgba(0,245,255,0.7)" 
+             stroke-width="1"/>
+    
+    <polygon points="30,11 44,18 44,30 30,39 16,30 16,18" 
+             fill="none" 
+             stroke="rgba(59,130,246,0.5)" 
+             stroke-width="0.8"/>
+    
+    <polygon points="30,14 41,20 41,28 30,36 19,28 19,20" 
+             fill="none" 
+             stroke="rgba(6,182,212,0.4)" 
+             stroke-width="0.6"/>
+    
+    <!-- Centre tech ultra-détaillé -->
+    <g transform="translate(30, 25)">
+      <!-- Hub central -->
+      <circle cx="0" cy="0" r="6" 
+              fill="rgba(0,245,255,0.1)" 
+              stroke="#00f5ff" 
+              stroke-width="1.5" 
+              filter="url(#premiumGlow)"/>
+      
+      <!-- Nœuds principaux -->
+      <circle cx="0" cy="-4" r="2.5" fill="#00f5ff" opacity="0.95" filter="url(#premiumGlow)"/>
+      <circle cx="3.5" cy="2" r="2" fill="#3b82f6" opacity="0.9" filter="url(#premiumGlow)"/>
+      <circle cx="-3.5" cy="2" r="2" fill="#06b6d4" opacity="0.9" filter="url(#premiumGlow)"/>
+      
+      <!-- Connexions principales -->
+      <line x1="0" y1="-2" x2="0" y2="2" stroke="#00f5ff" stroke-width="1.5" opacity="0.8"/>
+      <line x1="-2" y1="0" x2="2" y2="0" stroke="#3b82f6" stroke-width="1.5" opacity="0.8"/>
+      <line x1="-2.5" y1="-2.5" x2="2.5" y2="2.5" stroke="#06b6d4" stroke-width="1" opacity="0.7"/>
+      <line x1="2.5" y1="-2.5" x2="-2.5" y2="2.5" stroke="#06b6d4" stroke-width="1" opacity="0.7"/>
+      
+      <!-- Micro-éléments tech -->
+      <rect x="-0.5" y="-6" width="1" height="2" rx="0.5" fill="#00f5ff" opacity="0.9"/>
+      <rect x="4" y="0.5" width="2" height="1" rx="0.5" fill="#3b82f6" opacity="0.8"/>
+      <rect x="-6" y="0.5" width="2" height="1" rx="0.5" fill="#06b6d4" opacity="0.8"/>
+      
+      <!-- Orbites -->
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(0,245,255,0.2)" stroke-width="0.5"/>
+      <circle cx="0" cy="0" r="13" fill="none" stroke="rgba(59,130,246,0.15)" stroke-width="0.3"/>
+    </g>
+    
+    <!-- Points lumineux aux sommets -->
+    <circle cx="30" cy="5" r="2" fill="#00f5ff" filter="url(#premiumGlow)" opacity="0.9"/>
+    <circle cx="50" cy="25" r="1.8" fill="#3b82f6" filter="url(#premiumGlow)" opacity="0.8"/>
+    <circle cx="30" cy="45" r="2" fill="#00f5ff" filter="url(#premiumGlow)" opacity="0.9"/>
+    <circle cx="10" cy="25" r="1.8" fill="#06b6d4" filter="url(#premiumGlow)" opacity="0.8"/>
+    
+    <!-- Flux d'énergie -->
+    <path d="M30,8 Q40,15 35,25" fill="none" stroke="#00f5ff" stroke-width="1" opacity="0.6"/>
+    <path d="M47,25 Q35,35 25,30" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.5"/>
+    <path d="M30,42 Q20,35 25,25" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.6"/>
+    <path d="M13,25 Q25,15 35,20" fill="none" stroke="#00f5ff" stroke-width="1" opacity="0.4"/>
+  </g>
+  
+  <!-- Texte premium en bas -->
+  <g transform="translate(90, 55)">
+    <!-- Nom principal doux -->
+    <text x="0" y="0" font-family="'Inter', Arial, sans-serif" 
+          font-size="22" font-weight="700" 
+          fill="url(#textGradient)"
+          filter="url(#softGlow)"
+          style="letter-spacing: 1px; text-anchor: middle;">
+      Nell'Faa
+    </text>
+    
+    <!-- Ligne décorative douce -->
+    <line x1="-30" y1="8" x2="30" y2="8" 
+          stroke="#6b7280" 
+          stroke-width="2" 
+          opacity="0.4"
+          stroke-linecap="round"/>
+    
+    <!-- Points décoratifs doux -->
+    <circle cx="-35" cy="8" r="1.5" fill="#9ca3af" opacity="0.5"/>
+    <circle cx="35" cy="8" r="1.5" fill="#9ca3af" opacity="0.5"/>
+    
+  </g>
+</svg>

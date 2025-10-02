@@ -1,15 +1,35 @@
-// frontend/src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import { createRoot } from 'react-dom/client';
+import 'aos/dist/aos.css';
 import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+function ErrorBoundary({ children }) {
+  const [hasError, setHasError] = React.useState(false);
+
+  React.useEffect(() => {
+    const errorHandler = () => setHasError(true);
+    window.addEventListener('error', errorHandler);
+    return () => window.removeEventListener('error', errorHandler);
+  }, []);
+
+  if (hasError) {
+    return <div>Something went wrong. Please refresh the page or try again later.</div>;
+  }
+
+  return children;
+}
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
+    <ErrorBoundary>
       <App />
-    </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
+
+reportWebVitals();

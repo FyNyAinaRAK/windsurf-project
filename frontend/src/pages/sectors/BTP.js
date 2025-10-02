@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './SectorPage.css';
+import './UnifiedSectorPage.css';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 const BTP = () => {
   const [sector, setSector] = useState(null);
@@ -60,7 +60,7 @@ const BTP = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="sector-hero btp-hero">
+      <section className="sector-hero">
         <div className="container">
           <div className="sector-hero-content">
             <div className="sector-icon">{sector.icon || '🏗️'}</div>
@@ -103,7 +103,9 @@ const BTP = () => {
               ].map((service, index) => (
                 <div key={index} className="service-card">
                   <div className="service-number">{String(index + 1).padStart(2, '0')}</div>
-                  <p>{service}</p>
+                  <div className="service-content">
+                    <p>{service}</p>
+                  </div>
                 </div>
               ))
             )}

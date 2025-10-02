@@ -35,6 +35,16 @@ export const api = {
   getSectors: () => apiRequest('/api/sectors/'),
   getSector: (id) => apiRequest(`/api/sectors/${id}/`),
   
+  // Services
+  getAdminServices: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/api/sectors/services/admin/${queryString ? `?${queryString}` : ''}`);
+  },
+  getTechnicalServices: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/api/sectors/services/technical/${queryString ? `?${queryString}` : ''}`);
+  },
+  
   // Testimonials
   getTestimonials: (params = {}) => {
     const queryString = new URLSearchParams(params).toString();

@@ -122,20 +122,8 @@ const Footer = () => {
         <div className="footer-bottom">
           <p>&copy; {currentYear} Nell'Faa Groupe Majunga. Tous droits réservés.</p>
           <div className="footer-bottom-links">
-            <button 
-              className="footer-link-button" 
-              onClick={() => console.log('Mentions légales')}
-              aria-label="Voir les mentions légales"
-            >
-              Mentions légales
-            </button>
-            <button 
-              className="footer-link-button" 
-              onClick={() => console.log('Politique de confidentialité')}
-              aria-label="Voir la politique de confidentialité"
-            >
-              Politique de confidentialité
-            </button>
+            <span className="footer-link-inactive">Mentions légales</span>
+            <span className="footer-link-inactive">Politique de confidentialité</span>
           </div>
         </div>
       </div>

@@ -41,6 +41,7 @@ class Service(BaseModel):
     name = models.CharField(max_length=200, verbose_name="Nom du service")
     description = models.TextField(verbose_name="Description")
     icon = models.CharField(max_length=10, blank=True, verbose_name="Icône")
+    is_administrative = models.BooleanField(default=False, verbose_name="Service administratif")
     order = models.IntegerField(default=0, verbose_name="Ordre d'affichage")
     
     class Meta:

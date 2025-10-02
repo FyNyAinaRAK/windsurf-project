@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './SectorPage.css';
+import './UnifiedSectorPage.css';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 const Transport = () => {
   const [sector, setSector] = useState(null);
@@ -79,14 +79,14 @@ const Transport = () => {
   const heroDescription = sector?.description || "Avec une flotte moderne et une équipe expérimentée, Nell'Faa Transport vous offre des solutions de transport fiables et adaptées à tous vos besoins à Majunga et dans toute la région.";
 
   return (
-    <div className="sector-page page-transport">
+    <div className="sector-page page-transition transport-theme">
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="sector-hero transport-hero">
+      <section className="sector-hero">
         <div className="container">
           <div className="sector-hero-content">
             <div className="sector-icon">{sector?.icon || '🚛'}</div>
@@ -111,7 +111,9 @@ const Transport = () => {
             {services.map((service, index) => (
               <div key={index} className="service-card">
                 <div className="service-number">{String(index + 1).padStart(2, '0')}</div>
-                <p>{typeof service === 'object' ? service.name || service : service}</p>
+                <div className="service-content">
+                  <p>{typeof service === 'object' ? service.name || service : service}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -119,17 +121,17 @@ const Transport = () => {
       </section>
 
       {/* Fleet Section */}
-      <section className="section projects-section">
+      <section className="section properties-section">
         <div className="container">
           <h2 className="section-title">Notre Flotte</h2>
           <p className="section-subtitle">
             Véhicules modernes et bien entretenus pour garantir la sécurité de vos biens
           </p>
           
-          <div className="projects-grid">
+          <div className="properties-grid">
             {fleet.map((vehicle, index) => (
-              <div key={index} className="project-card">
-                <div className="project-year">{vehicle.capacity}</div>
+              <div key={index} className="property-card">
+                <div className="property-range">{vehicle.capacity}</div>
                 <h3>{vehicle.type}</h3>
                 <p>{vehicle.description}</p>
               </div>

@@ -120,15 +120,15 @@ REST_FRAMEWORK = {
     ],
 }
 
-# CORS configuration
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Pour le développement uniquement
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only in development
+# Ou pour une configuration plus stricte en production :
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',  # Frontend URL
+#     'https://votredomaine.com',  # Votre domaine de production
+# ]
 
 # Email configuration (for contact forms)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -7,91 +7,7 @@ import Newsletter from '../components/Newsletter';
 import FeaturedNews from '../components/FeaturedNews';
 import './Home.css';
 import '../components/Sectors.css';
-import { FaArrowRight, FaBuilding, FaTruck, FaHome, FaBullhorn, FaShieldAlt, FaGlobeAfrica, FaChartLine, FaUsers, FaHandshake, FaLightbulb, FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-
-const getSectorImage = (sector) => {
-  if (!sector) {
-    console.error('Aucun secteur fourni à getSectorImage');
-    return process.env.PUBLIC_URL + '/images/placeholder.jpg';
-  }
-  
-  console.log('=== getSectorImage appelé avec secteur ===', sector);
-  
-  // Images par défaut pour chaque secteur
-  const defaultImages = {
-    'btp': process.env.PUBLIC_URL + '/images/btp.jpg',
-    'transport': process.env.PUBLIC_URL + '/images/transport.jpg',
-    'immobilier': process.env.PUBLIC_URL + '/images/immobilier.jpg',
-    'communication': process.env.PUBLIC_URL + '/images/communication.jpg',
-    'services': process.env.PUBLIC_URL + '/images/services.jpg',
-    'security': process.env.PUBLIC_URL + '/images/security.jpg',
-    'import-export': process.env.PUBLIC_URL + '/images/import-export.jpg',
-  };
-
-  // Vérifier si le secteur a une image personnalisée
-  if (sector.image) {
-    console.log('Utilisation de l\'image personnalisée du secteur:', sector.image);
-    return sector.image;
-  }
-
-  // Fonction utilitaire pour normaliser un texte en slug
-  const toSlug = (text) => {
-    if (!text) return '';
-    return String(text)
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '') // Supprimer les caractères spéciaux
-      .replace(/[\s_]+/g, '_')   // Remplacer espaces et tirets par des underscores
-      .trim();
-  };
-
-  // Essayer différentes clés pour trouver un identifiant utilisable
-  const possibleKeys = ['slug', 'name', 'title', 'id'];
-  let foundSlug = '';
-  
-  for (const key of possibleKeys) {
-    if (sector[key]) {
-      const slug = toSlug(sector[key]);
-      console.log(`Essai avec clé "${key}" (valeur: "${sector[key]}" -> slug: "${slug}")`);
-      
-      if (defaultImages[slug]) {
-        console.log(`Correspondance trouvée pour le slug: ${slug}`);
-        return defaultImages[slug];
-      }
-      
-      // Stocker le premier slug valide trouvé pour un message d'erreur plus clair
-      if (!foundSlug && slug) {
-        foundSlug = slug;
-      }
-    }
-  }
-
-  // Si on arrive ici, aucune correspondance directe n'a été trouvée
-  console.warn('Aucune correspondance exacte trouvée pour le secteur:', {
-    secteur: sector,
-    slugsEssayes: possibleKeys.map(key => ({
-      key,
-      value: sector[key],
-      slug: sector[key] ? toSlug(sector[key]) : undefined
-    })),
-    clesDisponibles: Object.keys(sector)
-  });
-
-  // Essayer de trouver une correspondance partielle
-  if (foundSlug) {
-    const matchingKey = Object.keys(defaultImages).find(imgKey => 
-      imgKey.includes(foundSlug) || foundSlug.includes(imgKey)
-    );
-    
-    if (matchingKey) {
-      console.log(`Correspondance partielle trouvée: ${foundSlug} -> ${matchingKey}`);
-      return defaultImages[matchingKey];
-    }
-  }
-
-  // En dernier recours, utiliser l'image par défaut
-  console.warn('Utilisation de l\'image par défaut pour le secteur:', sector);
-  return process.env.PUBLIC_URL + '/images/placeholder.jpg';
-};
+import { FaArrowRight, FaBuilding, FaChartLine, FaUsers, FaHandshake, FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Home = () => {
   const [sectors, setSectors] = useState([]);
@@ -100,26 +16,19 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('mission');
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
-  const slidesToShow = 4; // Nombre de cartes à afficher à la fois
-
-  // Filtrer les secteurs en fonction du terme de recherche
-  const filteredSectors = sectors.filter(sector => 
-    sector.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (sector.description && sector.description.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const slidesToShow = 4;
 
   // Fonction pour passer au slide suivant
   const nextSlide = () => {
     setCurrentSlide((prev) => 
-      prev >= Math.ceil(filteredSectors.length / slidesToShow) - 1 ? 0 : prev + 1
+      prev >= Math.ceil(sectors.length / slidesToShow) - 1 ? 0 : prev + 1
     );
   };
 
   // Fonction pour revenir au slide précédent
   const prevSlide = () => {
     setCurrentSlide((prev) => 
-      prev <= 0 ? Math.ceil(filteredSectors.length / slidesToShow) - 1 : prev - 1
+      prev <= 0 ? Math.ceil(sectors.length / slidesToShow) - 1 : prev - 1
     );
   };
 
@@ -137,41 +46,12 @@ const Home = () => {
         setCompanyInfo(companyRes.data[0]);
         setLoading(false);
       } catch (error) {
-        console.error('Erreur lors du chargement des données:', error);
         setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log('Sectors data:', JSON.stringify(sectors, null, 2));
-  }, [sectors]);
-
-  // Données des avantages
-  const benefits = [
-    {
-      icon: <FaChartLine className="benefit-icon" />,
-      title: "Croissance Continue",
-      description: "Une croissance régulière et durable depuis notre création"
-    },
-    {
-      icon: <FaUsers className="benefit-icon" />,
-      title: "Équipe Expérimentée",
-      description: "Des professionnels qualifiés dans chaque secteur d'activité"
-    },
-    {
-      icon: <FaHandshake className="benefit-icon" />,
-      title: "Partenariats Solides",
-      description: "Un réseau de partenaires fiables et engagés"
-    },
-    {
-      icon: <FaLightbulb className="benefit-icon" />,
-      title: "Innovation Continue",
-      description: "Une veille technologique constante pour des solutions d'avenir"
-    }
-  ];
 
   // Données des statistiques
   const stats = [
@@ -271,64 +151,58 @@ const Home = () => {
             </p>
           </div>
           
-          {filteredSectors.length === 0 ? (
-            <div className="no-results" data-aos="fade-up">
-              <p>Aucun secteur ne correspond à votre recherche.</p>
-            </div>
-          ) : (
-            <div className="services-carousel-container">
-              <button 
-                className="carousel-arrow left-arrow" 
-                onClick={prevSlide}
-                aria-label="Précédent"
-                disabled={filteredSectors.length <= slidesToShow}
+          <div className="services-carousel-container">
+            <button 
+              className="carousel-arrow left-arrow" 
+              onClick={prevSlide}
+              aria-label="Précédent"
+              disabled={sectors.length <= slidesToShow}
+            >
+              <FaChevronLeft />
+            </button>
+            
+            <div className="services-carousel">
+              <div 
+                className="services-track"
+                style={{
+                  transform: `translateX(-${currentSlide * 100}%)`,
+                  transition: 'transform 0.5s ease-in-out'
+                }}
               >
-                <FaChevronLeft />
-              </button>
-              
-              <div className="services-carousel">
-                <div 
-                  className="services-track"
-                  style={{
-                    transform: `translateX(-${currentSlide * 100}%)`,
-                    transition: 'transform 0.5s ease-in-out'
-                  }}
-                >
-                  {filteredSectors.map((sector, index) => (
-                    <div 
-                      className="service-card" 
-                      key={sector.id} 
-                      data-aos="fade-up" 
-                      data-aos-delay={index * 100}
-                    >
-                      <div className="service-icon">
-                        {sector.icon || <FaBuilding />}
-                      </div>
-                      <h3>{sector.name}</h3>
-                      <div className="service-link-container">
-                        <Link 
-                          to={`/${sector.name === 'import_export' ? 'import-export' : sector.name}`}
-                          className="service-link"
-                          aria-label={`En savoir plus sur ${sector.display_name}`}
-                        >
-                          En savoir plus <FaArrowRight />
-                        </Link>
-                      </div>
+                {sectors.map((sector, index) => (
+                  <div 
+                    className="service-card" 
+                    key={sector.id} 
+                    data-aos="fade-up" 
+                    data-aos-delay={index * 100}
+                  >
+                    <div className="service-icon">
+                      {sector.icon || <FaBuilding />}
                     </div>
-                  ))}
-                </div>
+                    <h3>{sector.name}</h3>
+                    <div className="service-link-container">
+                      <Link 
+                        to={`/${sector.name === 'import_export' ? 'import-export' : sector.name}`}
+                        className="service-link"
+                        aria-label={`En savoir plus sur ${sector.display_name}`}
+                      >
+                        En savoir plus <FaArrowRight />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
-              
-              <button 
-                className="carousel-arrow right-arrow" 
-                onClick={nextSlide}
-                aria-label="Suivant"
-                disabled={filteredSectors.length <= slidesToShow}
-              >
-                <FaChevronRight />
-              </button>
             </div>
-          )}
+            
+            <button 
+              className="carousel-arrow right-arrow" 
+              onClick={nextSlide}
+              aria-label="Suivant"
+              disabled={sectors.length <= slidesToShow}
+            >
+              <FaChevronRight />
+            </button>
+          </div>
         </div>
       </section>
 

@@ -5,7 +5,7 @@ from .models import Sector, Service, Project, SectorStatistic
 class ServiceInline(admin.TabularInline):
     model = Service
     extra = 1
-    fields = ['name', 'description', 'icon', 'order', 'is_active']
+    fields = ['name', 'description', 'icon', 'is_administrative', 'order', 'is_active']
 
 
 class SectorStatisticInline(admin.TabularInline):

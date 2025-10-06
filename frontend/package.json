@@ -22,11 +22,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-  "start": "set PORT=10000 && set NODE_OPTIONS=--max-old-space-size=4096 && craco start",
-  "build": "craco build",
-  "test": "craco test",
-  "eject": "react-scripts eject"
-},
+    "start": "serve -s build -l $PORT",
+    "dev": "craco start",
+    "build": "set NODE_OPTIONS=--max-old-space-size=4096 && craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm install && npm run build"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,5 +50,8 @@
   "proxy": "http://localhost:8001",
   "engines": {
     "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.5"
   }
 }

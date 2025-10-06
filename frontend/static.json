@@ -1,13 +1,23 @@
 {
-    "root": "build/",
-    "clean_urls": false,
-    "routes": {
-      "/**": "index.html"
-    },
-    "https_only": true,
-    "headers": {
-      "/**": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
+  "root": "build/",
+  "clean_urls": false,
+  "routes": {
+    "/**": "index.html"
+  },
+  "https_only": true,
+  "headers": {
+    "/**": {
+      "Cache-Control": "public, max-age=0, must-revalidate",
+      "Access-Control-Allow-Origin": "*"
     }
-  }
+  },
+  "env": {
+    "NODE_ENV": "production",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/mars/create-react-app-buildpack.git"
+    }
+  ]
+}

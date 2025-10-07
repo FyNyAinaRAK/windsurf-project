@@ -3,10 +3,18 @@
 set -o errexit
 
 # Install dependencies
+echo "Installing dependencies..."
 pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --no-input
+# Create necessary directories
+mkdir -p staticfiles
 
 # Apply database migrations
-python manage.py migrate
+echo "Applying migrations..."
+python manage.py migrate --noinput
+
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --noinput --clear
+
+echo "Build completed successfully!"

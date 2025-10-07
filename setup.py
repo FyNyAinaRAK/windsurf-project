@@ -1,0 +1,21 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="nellfaa-backend",
+    version="0.1",
+    packages=find_packages(where="backend"),
+    package_dir={"": "backend"},
+    install_requires=[
+        'Django==4.2.7',
+        'djangorestframework==3.14.0',
+        'django-cors-headers==4.3.1',
+        'psycopg2-binary==2.9.7',
+        'dj-database-url==2.1.0',
+        'python-decouple==3.8',
+        'django-filter==23.5',
+        'Pillow>=10.0.0,<11.0.0',
+        'whitenoise==6.6.0',
+        'gunicorn==21.2.0',
+    ],
+    python_requires='>=3.10,<3.11',
+)

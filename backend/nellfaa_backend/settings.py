@@ -71,8 +71,9 @@ WSGI_APPLICATION = 'nellfaa_backend.wsgi.application'
 # Database
 DATABASES = {
     'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR}/db.sqlite3',
-        conn_max_age=600
+        default=config('DATABASE_URL', f'sqlite:///{BASE_DIR}/db.sqlite3'),
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
 
@@ -121,7 +122,13 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Pour le développement uniquement
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [
+        'https://nellfaa-groupe.onrender.com',
+        'https://www.nellfaa-groupe.mg',
+    ]
 CORS_ALLOW_CREDENTIALS = True
 
 # Ou pour une configuration plus stricte en production :
@@ -131,13 +138,13 @@ CORS_ALLOW_CREDENTIALS = True
 # ]
 
 # Email configuration (for contact forms)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = ''
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = 'contact@nellfaa-groupe.mg'
+EMAIL_BACKEND = config('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', '')
+EMAIL_PORT = config('EMAIL_PORT', 587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', 'contact@nellfaa-groupe.mg')
 
 # Security settings for production
 if not DEBUG:

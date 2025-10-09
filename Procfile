@@ -1,1 +1,1 @@
-web: cd backend && gunicorn nellfaa_backend.wsgi --log-file - --workers 4 --timeout 120
+web: cd backend && gunicorn nellfaa_backend.wsgi:application --log-file - --workers 4 --timeout 120

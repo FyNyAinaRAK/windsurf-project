@@ -4,16 +4,17 @@ services:
     name: nellfaa-backend
     env: python
     buildCommand: |
+      cd backend
       python -m pip install --upgrade pip
-      pip install -r backend/requirements.txt
-      python backend/manage.py migrate
-      python backend/manage.py collectstatic --noinput
-    startCommand: gunicorn backend.nellfaa_backend.wsgi:application --log-file -
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn nellfaa_backend.wsgi:application --log-file -
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.13
       - key: DISABLE_COLLECTSTATIC
-        value: 1
+        value: 0
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY

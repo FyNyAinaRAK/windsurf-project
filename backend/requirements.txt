@@ -1,10 +1,19 @@
+# Paquets principaux
 Django==4.2.7
 djangorestframework==3.14.0
 django-cors-headers==4.3.1
-psycopg2-binary==2.9.9
-dj-database-url==2.1.0
 python-decouple==3.8
-django-filter==23.5
+
+# Base de données
+dj-database-url==2.1.0
+psycopg2-binary==2.9.9  # Pour PostgreSQL en production
+
+# Gestion des médias
 Pillow==10.1.0
-whitenoise==6.6.0
+
+# Pour la production
 gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Développement uniquement (ne pas utiliser en production)
+python-dotenv==1.0.0

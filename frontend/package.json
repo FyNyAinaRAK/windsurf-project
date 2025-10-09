@@ -47,7 +47,16 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8001",
+  "proxy": {
+    "/api": {
+      "target": "https://nellfaa-backend.onrender.com",
+      "changeOrigin": true,
+      "secure": false,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  },
   "engines": {
     "node": ">=14.0.0"
   },

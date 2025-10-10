@@ -4,15 +4,26 @@ services:
     name: nellfaa-backend
     env: python
     buildCommand: |
+      echo "Installation des dépendances..."
       cd backend
       python -m pip install --upgrade pip
       pip install -r requirements.txt
+      
+      echo "Application des migrations..."
       python manage.py migrate
+      
+      echo "Collecte des fichiers statiques..."
       python manage.py collectstatic --noinput
-    startCommand: gunicorn nellfaa_backend.wsgi:application --log-file -
+      
+      echo "Configuration terminée avec succès!"
+    
+    startCommand: gunicorn nellfaa_backend.wsgi:application --log-file=--log-level=info
+    
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.13
+      - key: PYTHONUNBUFFERED
+        value: 1
       - key: DISABLE_COLLECTSTATIC
         value: 0
       - key: SECRET_KEY
@@ -26,11 +37,15 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: "nellfaa-backend.onrender.com"
+        value: "nellfaa-backend.onrender.com, localhost"
+      - key: DJANGO_SETTINGS_MODULE
+        value: "nellfaa_backend.settings"
+    
     plan: free
     region: oregon
     numInstances: 1
-    httpPort: 10000
+    httpPort: 8000
+    healthCheckPath: /api/health/
 
   # Frontend (React)
   - type: web
@@ -56,7 +71,5 @@ services:
 # Base de données PostgreSQL
 databases:
   - name: nellfaa-db
-    databaseName: nellfaa
-    user: nellfaa_user
     plan: free
     region: oregon

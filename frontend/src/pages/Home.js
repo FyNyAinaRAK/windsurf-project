@@ -95,7 +95,20 @@ const Home = () => {
           axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/company-info/`)
         ]);
         
-        setSectors(sectorsRes.data);
+        console.log('Données brutes des secteurs:', sectorsRes.data);
+        
+        // S'assurer que chaque secteur a un slug
+        const sectorsWithSlug = sectorsRes.data.map(sector => {
+          const slug = sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-');
+          console.log(`Secteur: ${sector.name}, Slug: ${slug}`);
+          return {
+            ...sector,
+            slug: slug
+          };
+        });
+        
+        console.log('Secteurs avec slugs:', sectorsWithSlug);
+        setSectors(sectorsWithSlug);
         setTestimonials(testimonialsRes.data);
         setCompanyInfo(companyRes.data[0]);
         setLoading(false);
@@ -239,7 +252,10 @@ const Home = () => {
                     </div>
                     <h3>{sector.name}</h3>
                     <p>{sector.short_description || ''}</p>
-                    <Link to={`/secteurs/${sector.slug}`} className="btn btn-link">
+                    <Link 
+                      to={`/${sector.name === 'import_export' ? 'import-export' : (sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-'))}`} 
+                      className="btn btn-link"
+                    >
                       En savoir plus <FaArrowRight />
                     </Link>
                   </div>

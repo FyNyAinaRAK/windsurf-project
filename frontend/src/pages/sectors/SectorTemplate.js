@@ -26,6 +26,7 @@ const SectorTemplate = ({
   ctaTitle,
   ctaDescription,
   theme, // Ajout du paramètre theme manquant
+  forceSlug, // Ajout de la propriété forceSlug
 }) => {
   const [sector, setSector] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,10 +35,13 @@ const SectorTemplate = ({
   useEffect(() => {
     const fetchSectorData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/sectors/${sectorName}/`);
+        // Utiliser le nom du secteur avec des underscores pour l'API
+        const apiSectorName = sectorName.replace(/-/g, '_');
+        const response = await axios.get(`${API_URL}/api/sectors/${apiSectorName}/`);
         setSector(response.data);
         setLoading(false);
       } catch (err) {
+        console.error('Erreur lors du chargement des données du secteur:', err);
         setError('Erreur lors du chargement des données. Veuillez réessayer plus tard.');
         setLoading(false);
       }

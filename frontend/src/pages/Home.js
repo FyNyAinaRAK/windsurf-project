@@ -16,20 +16,74 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('mission');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const servicesTrackRef = React.useRef(null);
   const slidesToShow = 4;
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - servicesTrackRef.current.offsetLeft);
+    setScrollLeft(servicesTrackRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - servicesTrackRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Multiplier pour un défilement plus rapide
+    servicesTrackRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   // Fonction pour passer au slide suivant
   const nextSlide = () => {
-    setCurrentSlide((prev) => 
-      prev >= Math.ceil(sectors.length / slidesToShow) - 1 ? 0 : prev + 1
-    );
+    if (!servicesTrackRef.current) return;
+    
+    const track = servicesTrackRef.current;
+    const cardWidth = track.firstChild ? track.firstChild.offsetWidth + 32 : 300; // 32px pour la marge
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    
+    if (track.scrollLeft + track.clientWidth >= maxScroll - 10) {
+      // Si on est à la fin, revenir au début
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      // Sinon, faire défiler d'une carte
+      track.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Fonction pour revenir au slide précédent
   const prevSlide = () => {
-    setCurrentSlide((prev) => 
-      prev <= 0 ? Math.ceil(sectors.length / slidesToShow) - 1 : prev - 1
-    );
+    if (!servicesTrackRef.current) return;
+    
+    const track = servicesTrackRef.current;
+    const cardWidth = track.firstChild ? track.firstChild.offsetWidth + 32 : 300; // 32px pour la marge
+    
+    if (track.scrollLeft <= 10) {
+      // Si on est au début, aller à la fin
+      track.scrollTo({ 
+        left: track.scrollWidth, 
+        behavior: 'smooth' 
+      });
+    } else {
+      // Sinon, faire défiler d'une carte vers l'arrière
+      track.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -156,7 +210,7 @@ const Home = () => {
               className="carousel-arrow left-arrow" 
               onClick={prevSlide}
               aria-label="Précédent"
-              disabled={sectors.length <= slidesToShow}
+              disabled={sectors.length <= 1}
             >
               <FaChevronLeft />
             </button>
@@ -164,9 +218,13 @@ const Home = () => {
             <div className="services-carousel">
               <div 
                 className="services-track"
+                ref={servicesTrackRef}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
                 style={{
-                  transform: `translateX(-${currentSlide * 100}%)`,
-                  transition: 'transform 0.5s ease-in-out'
+                  cursor: isDragging ? 'grabbing' : 'grab'
                 }}
               >
                 {sectors.map((sector, index) => (
@@ -180,25 +238,20 @@ const Home = () => {
                       {sector.icon || <FaBuilding />}
                     </div>
                     <h3>{sector.name}</h3>
-                    <div className="service-link-container">
-                      <Link 
-                        to={`/${sector.name === 'import_export' ? 'import-export' : sector.name}`}
-                        className="service-link"
-                        aria-label={`En savoir plus sur ${sector.display_name}`}
-                      >
-                        En savoir plus <FaArrowRight />
-                      </Link>
-                    </div>
+                    <p>{sector.short_description || ''}</p>
+                    <Link to={`/secteurs/${sector.slug}`} className="btn btn-link">
+                      En savoir plus <FaArrowRight />
+                    </Link>
                   </div>
                 ))}
               </div>
             </div>
-            
+
             <button 
               className="carousel-arrow right-arrow" 
               onClick={nextSlide}
               aria-label="Suivant"
-              disabled={sectors.length <= slidesToShow}
+              disabled={sectors.length <= 1}
             >
               <FaChevronRight />
             </button>

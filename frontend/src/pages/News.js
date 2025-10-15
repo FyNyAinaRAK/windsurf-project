@@ -17,7 +17,7 @@ const News = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get('http://localhost:8001/api/news/');
+        const response = await axios.get('http://localhost:8000/api/news/');
         setArticles(response.data);
         setFilteredArticles(response.data); // Initialiser avec tous les articles
       } catch (error) {

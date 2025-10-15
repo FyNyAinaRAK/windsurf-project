@@ -142,7 +142,7 @@ const Contact = () => {
         secteur: secteurMapping[formData.secteur] || ''
       };
 
-      const response = await fetch('http://localhost:8001/api/contacts/submit/', {
+      const response = await fetch('http://localhost:8000/api/contacts/submit/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -388,8 +388,28 @@ const Contact = () => {
                   type="submit"
                   className="btn btn-primary"
                   disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.02, boxShadow: '0 4px 12px rgba(26, 54, 93, 0.4)' }}
                   whileTap={{ scale: 0.98 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a365d, #2c5282)',
+                    color: 'white',
+                    padding: '1rem 2rem',
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '300px',
+                    margin: '2rem auto 1rem',
+                    boxShadow: '0 4px 15px rgba(26, 54, 93, 0.3)',
+                    opacity: 1,
+                    visibility: 'visible',
+                    position: 'relative',
+                    zIndex: 1,
+                    textAlign: 'center'
+                  }}
                 >
                   {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </motion.button>

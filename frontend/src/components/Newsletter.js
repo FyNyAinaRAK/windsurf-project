@@ -44,7 +44,7 @@ const Newsletter = () => {
     setSubmitMessage('');
     
     try {
-      const response = await fetch('http://localhost:8001/api/contacts/newsletter/', {
+      const response = await fetch('http://localhost:8000/api/contacts/newsletter/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,66 +4,82 @@ color 0A
 
 echo ========================================
 echo    NELL'FAA GROUPE MAJUNGA
-echo    Démarrage du projet complet
+echo    Démarrage du backend et du frontend
 echo ========================================
 echo.
 
-echo Choisissez une option:
-echo 1. Démarrer le backend Django uniquement
-echo 2. Démarrer le frontend React uniquement  
-echo 3. Démarrer les deux (recommandé)
-echo 4. Configuration initiale du projet
-echo 5. Quitter
-echo.
-
-set /p choice=Votre choix (1-5): 
-
-if "%choice%"=="1" (
-    echo Démarrage du backend Django...
-    cd backend
-    call start.bat
-) else if "%choice%"=="2" (
-    echo Démarrage du frontend React...
-    cd frontend
-    call start.bat
-) else if "%choice%"=="3" (
-    echo Démarrage du projet complet...
-    echo.
-    echo Démarrage du backend Django dans une nouvelle fenêtre...
-    start "Django Backend" cmd /k "cd backend && start.bat"
-    
-    timeout /t 3 /nobreak >nul
-    
-    echo Démarrage du frontend React...
-    cd frontend
-    call start.bat
-) else if "%choice%"=="4" (
-    echo Configuration initiale du projet...
-    echo.
-    echo 1. Configuration du backend Django...
-    cd backend
-    if not exist ".env" (
-        copy .env.example .env
-        echo Fichier .env créé. Veuillez le configurer selon vos besoins.
-    )
-    
-    echo 2. Installation des dépendances frontend...
-    cd ..\frontend
-    if not exist "node_modules" (
-        npm install
-    )
-    
-    echo.
-    echo Configuration terminée!
-    echo Vous pouvez maintenant démarrer le projet avec l'option 3.
+:: Vérifier si Python est installé
+python --version >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo Erreur: Python n'est pas installé ou n'est pas dans le PATH.
     pause
-) else if "%choice%"=="5" (
-    echo Au revoir!
-    exit
-) else (
-    echo Choix invalide. Veuillez réessayer.
-    pause
-    goto :start
+    exit /b 1
 )
+
+:: Vérifier si Node.js est installé
+node --version >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo Erreur: Node.js n'est pas installé ou n'est pas dans le PATH.
+    pause
+    exit /b 1
+)
+
+:: Vérifier et configurer l'environnement backend
+echo Configuration du backend Django...
+cd backend
+
+:: Vérifier si le fichier .env existe, sinon le créer
+if not exist ".env" (
+    echo Création du fichier .env...
+    @"
+    DATABASE_URL=sqlite:///db.sqlite3
+    DEBUG=True
+    SECRET_KEY=change-this-to-a-secure-key-in-production
+    ALLOWED_HOSTS=localhost,127.0.0.1
+    "@ > .env
+    echo Fichier .env créé avec la configuration par défaut.
+)
+
+:: Installer les dépendances Python
+echo Installation des dépendances Python...
+python -m pip install --upgrade pip
+if exist "requirements.txt" (
+    pip install -r requirements.txt
+)
+
+:: Appliquer les migrations
+echo Application des migrations...
+python manage.py migrate
+
+:: Démarrer le serveur backend dans une nouvelle fenêtre
+echo Démarrage du backend Django...
+start "Django Backend" cmd /k "cd /d %~dp0backend && python manage.py runserver"
+
+:: Donner un peu de temps au backend pour démarrer
+timeout /t 5 /nobreak >nul
+
+:: Configurer et démarrer le frontend
+echo Configuration du frontend...
+cd ..\frontend
+
+:: Installer les dépendances Node.js si nécessaire
+if not exist "node_modules" (
+    echo Installation des dépendances Node.js...
+    npm install
+)
+
+:: Démarrer le serveur de développement React
+echo Démarrage du frontend React...
+start "React Frontend" cmd /k "cd /d %~dp0frontend && npm start"
+
+echo.
+echo ========================================
+echo    Les serveurs sont en cours de démarrage...
+echo    - Backend: http://localhost:8000
+echo    - Admin:   http://localhost:8000/admin
+echo    - Frontend: http://localhost:3000
+echo ========================================
+echo.
+pause
 
 pause

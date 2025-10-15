@@ -10,7 +10,7 @@ const FeaturedNews = () => {
   useEffect(() => {
     const fetchFeaturedArticles = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/api/news/?is_featured=true');
+        const response = await axios.get('http://localhost:8000/api/news/?is_featured=true');
         setFeaturedArticles(response.data.slice(0, 3)); // Limite à 3 articles
         setLoading(false);
       } catch (error) {

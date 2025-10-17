@@ -15,6 +15,12 @@ __pycache__/
 build/
 dist/
 
+# Django
+staticfiles/
+*.sqlite3
+*.db
+media/
+
 # IDE specific files
 .idea/
 .vscode/

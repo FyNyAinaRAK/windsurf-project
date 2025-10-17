@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>🏢 Nell'Faa Groupe API</h1>
+    <p>API Backend pour le site web de Nell'Faa Groupe Majunga</p>
+</div>
+
+<div class="card">
+    <h2>🚀 API Endpoints Disponibles</h2>
+    <div class="endpoints">
+        <div class="endpoint">
+            <div>
+                <span class="method">GET</span>
+                <span>/admin/</span>
+                <span> - Administration Django (disponible)</span>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <div>
+                <span class="method">GET</span>
+                <span>/api/</span>
+                <span> - API REST (en cours de configuration)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>⚙️ Administration</h2>
+    <p>
+        <a href="/admin/" target="_blank" style="color: #90cdf4; text-decoration: none; font-weight: 500;">
+            🔧 Accéder à l'administration Django
+        </a>
+    </p>
+    <p style="opacity: 0.8; font-size: 0.9rem;">
+        Gérez les secteurs, services, projets, témoignages et messages de contact.
+    </p>
+</div>
+
+<div class="card">
+    <h2>🌐 Frontend</h2>
+    <p>
+        Le site web principal est disponible sur : 
+        <a href="http://localhost:3000" target="_blank" style="color: #90cdf4; text-decoration: none; font-weight: 500;">
+            http://localhost:3000
+        </a>
+    </p>
+    <p style="opacity: 0.8; font-size: 0.9rem;">
+        Assurez-vous que le serveur React est démarré.
+    </p>
+</div>
+
+<div class="footer">
+    <p>© 2024 Nell'Faa Groupe Majunga - API Backend</p>
+</div>
+{% endblock %}

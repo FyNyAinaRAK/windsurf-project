@@ -16,8 +16,8 @@ const NewsDetail = () => {
     const fetchArticle = async () => {
       try {
         const [articleResponse, relatedResponse] = await Promise.all([
-          axios.get(`http://localhost:8000/api/news/${slug}/`),
-          axios.get('http://localhost:8000/api/news/?page_size=4')
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/news/${slug}/`),
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/news/?page_size=4`)
         ]);
         
         setArticle(articleResponse.data);

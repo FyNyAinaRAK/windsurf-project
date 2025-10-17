@@ -17,7 +17,7 @@ const News = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get('http://localhost:8000/api/news/');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/news/`);
         // L'API retourne maintenant un objet paginé avec {results: [...], count: ..., next: ..., previous: ...}
         const articlesData = response.data.results || response.data;
         setArticles(articlesData);

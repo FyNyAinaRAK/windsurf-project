@@ -362,7 +362,7 @@ const Home = () => {
       {/* Testimonials Section */}
       <section className="testimonials-section section">
         <div className="container">
-          <div className="section-header" data-aos="fade-up">
+          <div className="section-header"  data-aos="fade-up">
             <span className="section-subtitle">Témoignages</span>
             <h2 className="section-title">Ce que disent nos clients</h2>
             <p className="section-description">

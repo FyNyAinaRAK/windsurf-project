@@ -2,8 +2,11 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
+import logging
 from .models import ContactMessage, NewsletterSubscription
 from .serializers import ContactMessageSerializer, NewsletterSubscriptionSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class ContactMessageCreateView(generics.CreateAPIView):
@@ -44,7 +47,7 @@ class ContactMessageCreateView(generics.CreateAPIView):
             )
         except Exception as e:
             # Log error but don't fail the request
-            print(f"Erreur envoi email: {e}")
+            logger.error(f"Erreur lors de l'envoi de l'email de notification: {str(e)}", exc_info=True)
         
         return Response(
             {

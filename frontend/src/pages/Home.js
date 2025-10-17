@@ -97,8 +97,13 @@ const Home = () => {
         
         console.log('Données brutes des secteurs:', sectorsRes.data);
         
+        // Gérer les réponses paginées ou non
+        const sectorsData = sectorsRes.data.results || sectorsRes.data;
+        const testimonialsData = testimonialsRes.data.results || testimonialsRes.data;
+        const companyData = companyRes.data.results || companyRes.data;
+        
         // S'assurer que chaque secteur a un slug
-        const sectorsWithSlug = sectorsRes.data.map(sector => {
+        const sectorsWithSlug = sectorsData.map(sector => {
           const slug = sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-');
           console.log(`Secteur: ${sector.name}, Slug: ${slug}`);
           return {
@@ -109,10 +114,11 @@ const Home = () => {
         
         console.log('Secteurs avec slugs:', sectorsWithSlug);
         setSectors(sectorsWithSlug);
-        setTestimonials(testimonialsRes.data);
-        setCompanyInfo(companyRes.data[0]);
+        setTestimonials(testimonialsData);
+        setCompanyInfo(Array.isArray(companyData) ? companyData[0] : companyData);
         setLoading(false);
       } catch (error) {
+        console.error('Erreur lors du chargement des données:', error);
         setLoading(false);
       }
     };

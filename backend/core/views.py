@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import CompanyInfo, Testimonial, NewsArticle
@@ -10,6 +11,12 @@ from .serializers import (
     NewsArticleSerializer,
     NewsArticleListSerializer
 )
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 @api_view(['GET'])
@@ -35,6 +42,7 @@ class TestimonialListView(generics.ListAPIView):
     """List all active testimonials"""
     queryset = Testimonial.objects.filter(is_active=True)
     serializer_class = TestimonialSerializer
+    pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['sector', 'rating']
     search_fields = ['client_name', 'client_company', 'content']
@@ -46,6 +54,7 @@ class NewsArticleListView(generics.ListAPIView):
     """List all published news articles"""
     queryset = NewsArticle.objects.filter(is_active=True)
     serializer_class = NewsArticleListSerializer
+    pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['is_featured']
     search_fields = ['title', 'content']

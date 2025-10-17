@@ -1,8 +1,18 @@
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+import logging
 from .models import Sector, Project, Service
 from .serializers import SectorListSerializer, SectorDetailSerializer, ProjectSerializer, ServiceSerializer
+
+logger = logging.getLogger(__name__)
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 
 class SectorListView(generics.ListAPIView):
@@ -23,13 +33,15 @@ class SectorDetailView(generics.RetrieveAPIView):
             return super().get_object()
         except Exception as e:
             from rest_framework.exceptions import NotFound
-            raise NotFound(f"Secteur non trouvé ou inactif")
+            logger.warning(f"Tentative d'accès à un secteur inexistant: {self.kwargs.get('name')}")
+            raise NotFound("Secteur non trouvé ou inactif")
 
 
 class ProjectListView(generics.ListAPIView):
     """List all active projects"""
-    queryset = Project.objects.filter(is_active=True)
+    queryset = Project.objects.filter(is_active=True).select_related('sector')
     serializer_class = ProjectSerializer
+    pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['sector__name', 'is_featured']
     search_fields = ['title', 'description', 'client']

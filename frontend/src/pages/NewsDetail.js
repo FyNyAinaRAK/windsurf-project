@@ -17,13 +17,14 @@ const NewsDetail = () => {
       try {
         const [articleResponse, relatedResponse] = await Promise.all([
           axios.get(`http://localhost:8000/api/news/${slug}/`),
-          axios.get('http://localhost:8000/api/news/?limit=3')
+          axios.get('http://localhost:8000/api/news/?page_size=4')
         ]);
         
         setArticle(articleResponse.data);
-        // Exclure l'article actuel des articles similaires
+        // Gérer la réponse paginée et exclure l'article actuel
+        const relatedData = relatedResponse.data.results || relatedResponse.data;
         setRelatedArticles(
-          relatedResponse.data.filter(article => article.slug !== slug)
+          relatedData.filter(article => article.slug !== slug).slice(0, 3)
         );
       } catch (err) {
         console.error('Erreur lors du chargement de l\'article:', err);

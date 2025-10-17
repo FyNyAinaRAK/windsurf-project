@@ -18,8 +18,10 @@ const News = () => {
         setLoading(true);
         setError(null);
         const response = await axios.get('http://localhost:8000/api/news/');
-        setArticles(response.data);
-        setFilteredArticles(response.data); // Initialiser avec tous les articles
+        // L'API retourne maintenant un objet paginé avec {results: [...], count: ..., next: ..., previous: ...}
+        const articlesData = response.data.results || response.data;
+        setArticles(articlesData);
+        setFilteredArticles(articlesData); // Initialiser avec tous les articles
       } catch (error) {
         console.error('Erreur lors du chargement des actualités:', error);
         setError('Impossible de charger les actualités. Veuillez réessayer plus tard.');

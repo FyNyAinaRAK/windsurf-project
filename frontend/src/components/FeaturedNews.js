@@ -11,7 +11,9 @@ const FeaturedNews = () => {
     const fetchFeaturedArticles = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/news/?is_featured=true');
-        setFeaturedArticles(response.data.slice(0, 3)); // Limite à 3 articles
+        // Gérer la réponse paginée
+        const articlesData = response.data.results || response.data;
+        setFeaturedArticles(articlesData.slice(0, 3)); // Limite à 3 articles
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors du chargement des articles featured:', error);

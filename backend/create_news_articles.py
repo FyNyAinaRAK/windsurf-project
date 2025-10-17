@@ -20,7 +20,7 @@ def create_articles():
     
     articles_data = [
         {
-            'title': "Nell'Faa Immobilier développe le premier éco-quartier de Majunga",
+            'title': "Premier éco-quartier de Majunga",
             'content': """
 <p>Nell'Faa Immobilier vient d'annoncer le lancement d'un projet ambitieux : le premier éco-quartier de Majunga. Ce complexe résidentiel innovant de 120 logements intégrera les dernières technologies en matière de développement durable.</p>
 
@@ -44,7 +44,7 @@ def create_articles():
             'published_date': datetime.now() - timedelta(days=2)
         },
         {
-            'title': "Nell'Faa Transport modernise sa flotte avec 20 nouveaux véhicules hybrides",
+            'title': "20 nouveaux véhicules hybrides",
             'content': """
 <p>Dans le cadre de sa stratégie de transition écologique, Nell'Faa Transport vient d'acquérir 20 nouveaux véhicules hybrides pour renforcer sa flotte de transport de marchandises et de passagers.</p>
 
@@ -66,7 +66,7 @@ def create_articles():
             'published_date': datetime.now() - timedelta(days=5)
         },
         {
-            'title': "Nell'Faa BTP remporte le contrat de construction du nouveau centre commercial",
+            'title': "Construction du centre commercial Majunga Plaza",
             'content': """
 <p>Nell'Faa BTP a été sélectionné pour construire le nouveau centre commercial "Majunga Plaza", un projet de 8 milliards d'Ariary qui transformera le paysage commercial de la ville.</p>
 
@@ -90,7 +90,7 @@ def create_articles():
             'published_date': datetime.now() - timedelta(days=8)
         },
         {
-            'title': "Nell'Faa Security sécurise le nouveau port de Majunga",
+            'title': "Sécurisation du nouveau port de Majunga",
             'content': """
 <p>Nell'Faa Security a remporté le contrat de sécurisation du nouveau port de Majunga, un projet stratégique pour le développement économique de la région.</p>
 
@@ -111,7 +111,7 @@ def create_articles():
             'published_date': datetime.now() - timedelta(days=12)
         },
         {
-            'title': "Nell'Faa Communication lance une nouvelle agence digitale",
+            'title': "Nouvelle agence digitale à Majunga",
             'content': """
 <p>Nell'Faa Communication annonce l'ouverture de sa nouvelle agence spécialisée dans le marketing digital et les réseaux sociaux.</p>
 

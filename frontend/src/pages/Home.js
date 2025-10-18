@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { FadeInOnScroll, StaggerContainer, StaggerItem, ParallaxWrapper, ScaleOnScroll } from '../components/ScrollAnimations';
 import Hero from '../components/Hero';
 import Newsletter from '../components/Newsletter';
 import FeaturedNews from '../components/FeaturedNews';
 import './Home.css';
 import '../components/Sectors.css';
-import { FaArrowRight, FaBuilding, FaChartLine, FaUsers, FaHandshake, FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaArrowRight, FaBuilding, FaChartLine, FaUsers, FaHandshake, FaCheck, FaChevronLeft, FaChevronRight, FaGlobeAfrica } from 'react-icons/fa';
 
 const Home = () => {
   const [sectors, setSectors] = useState([]);
@@ -197,232 +200,262 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="stats-section section">
-        <div className="container">
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <div className="stat-card" key={index} data-aos="fade-up" data-aos-delay={index * 100}>
-                <div className="stat-icon-container">
-                  {stat.icon}
-                </div>
-                <h3 className="number" data-count={stat.number.replace('+', '')}>0</h3>
-                <p>{stat.label}</p>
+      <ParallaxWrapper speed={0.2} direction="up">
+        <section className="stats-section section">
+          <div className="container">
+            <StaggerContainer staggerDelay={0.15}>
+              <div className="stats-grid">
+                {stats.map((stat, index) => (
+                  <StaggerItem key={index} direction="up" distance={40}>
+                    <ScaleOnScroll scaleFrom={0.8} scaleTo={1}>
+                      <div className="stat-card">
+                        <div className="stat-icon-container">
+                          {stat.icon}
+                        </div>
+                        <h3 className="number" data-count={stat.number.replace('+', '')}>0</h3>
+                        <p>{stat.label}</p>
+                      </div>
+                    </ScaleOnScroll>
+                  </StaggerItem>
+                ))}
               </div>
-            ))}
+            </StaggerContainer>
           </div>
-        </div>
-      </section>
+        </section>
+      </ParallaxWrapper>
 
       {/* Services Section */}
       <section className="services-section section">
         <div className="container">
-          <div className="section-header" data-aos="fade-up">
-            <span className="section-subtitle">Nos Services</span>
-            <h2 className="section-title">Découvrez nos domaines d'expertise</h2>
-            <p className="section-description">
-              Une gamme complète de services pour répondre à tous vos besoins professionnels
-            </p>
-          </div>
-          
-          <div className="services-carousel-container">
-            <button 
-              className="carousel-arrow left-arrow" 
-              onClick={prevSlide}
-              aria-label="Précédent"
-              disabled={sectors.length <= 1}
-            >
-              <FaChevronLeft />
-            </button>
-            
-            <div className="services-carousel">
-              <div 
-                className="services-track"
-                ref={servicesTrackRef}
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                style={{
-                  cursor: isDragging ? 'grabbing' : 'grab'
-                }}
-              >
-                {sectors.map((sector, index) => (
-                  <div 
-                    className="service-card" 
-                    key={sector.id} 
-                    data-aos="fade-up" 
-                    data-aos-delay={index * 100}
-                  >
-                    <div className="service-icon">
-                      {sector.icon || <FaBuilding />}
-                    </div>
-                    <h3>{sector.name}</h3>
-                    <p>{sector.short_description || ''}</p>
-                    <Link 
-                      to={`/${sector.name === 'import_export' ? 'import-export' : (sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-'))}`} 
-                      className="btn btn-link"
-                    >
-                      En savoir plus <FaArrowRight />
-                    </Link>
-                  </div>
-                ))}
-              </div>
+          <FadeInOnScroll direction="up" delay={0.2}>
+            <div className="section-header">
+              <span className="section-subtitle">Nos Services</span>
+              <h2 className="section-title">Découvrez nos domaines d'expertise</h2>
+              <p className="section-description">
+                Une gamme complète de services pour répondre à tous vos besoins professionnels
+              </p>
             </div>
+          </FadeInOnScroll>
+          
+          <FadeInOnScroll direction="up" delay={0.4}>
+            <div className="services-carousel-container">
+              <button 
+                className="carousel-arrow left-arrow" 
+                onClick={prevSlide}
+                aria-label="Précédent"
+                disabled={sectors.length <= 1}
+              >
+                <FaChevronLeft />
+              </button>
+              
+              <div className="services-carousel">
+                <div 
+                  className="services-track"
+                  ref={servicesTrackRef}
+                  onMouseDown={handleMouseDown}
+                  onMouseLeave={handleMouseLeave}
+                  onMouseUp={handleMouseUp}
+                  onMouseMove={handleMouseMove}
+                  style={{
+                    cursor: isDragging ? 'grabbing' : 'grab'
+                  }}
+                >
+                  {sectors.map((sector, index) => (
+                    <div 
+                      className="service-card" 
+                      key={sector.id}
+                    >
+                      <div className="service-icon">
+                        {sector.icon || <FaBuilding />}
+                      </div>
+                      <h3>{sector.name}</h3>
+                      <p>{sector.short_description || ''}</p>
+                      <Link 
+                        to={`/${sector.name === 'import_export' ? 'import-export' : (sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-'))}`} 
+                        className="btn btn-link"
+                      >
+                        En savoir plus <FaArrowRight />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-            <button 
-              className="carousel-arrow right-arrow" 
-              onClick={nextSlide}
-              aria-label="Suivant"
-              disabled={sectors.length <= 1}
-            >
-              <FaChevronRight />
-            </button>
-          </div>
+              <button 
+                className="carousel-arrow right-arrow" 
+                onClick={nextSlide}
+                aria-label="Suivant"
+                disabled={sectors.length <= 1}
+              >
+                <FaChevronRight />
+              </button>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="why-choose-us section">
+      {/* About Section */}
+      <section className="about-section section">
         <div className="container">
-          <div className="section-header" data-aos="fade-up">
-            <span className="section-subtitle">Pourquoi nous choisir</span>
-            <h2 className="section-title">Notre engagement envers l'excellence</h2>
-          </div>
+          <FadeInOnScroll direction="up" delay={0.2}>
+            <div className="section-header">
+              <span className="section-subtitle">Pourquoi nous choisir</span>
+              <h2 className="section-title">Notre engagement envers l'excellence</h2>
+            </div>
+          </FadeInOnScroll>
           
-          <div className="tabs">
-            <div className="tab-buttons">
-              <button 
-                className={`tab-btn ${activeTab === 'mission' ? 'active' : ''}`}
-                onClick={() => setActiveTab('mission')}
-              >
-                Notre Mission
-              </button>
-              <button 
-                className={`tab-btn ${activeTab === 'vision' ? 'active' : ''}`}
-                onClick={() => setActiveTab('vision')}
-              >
-                Notre Vision
-              </button>
-              <button 
-                className={`tab-btn ${activeTab === 'values' ? 'active' : ''}`}
-                onClick={() => setActiveTab('values')}
-              >
-                Nos Valeurs
-              </button>
-            </div>
-            
-            <div className="tab-content">
-              {activeTab === 'mission' && (
-                <div className="tab-pane" data-aos="fade-up">
-                  <h3>Notre mission</h3>
-                  <p>
-                    Chez NELL'FAA GROUPE, nous nous engageons à fournir des solutions innovantes et sur mesure 
-                    qui dépassent les attentes de nos clients. Notre mission est de contribuer au développement 
-                    économique de Madagascar à travers nos différents secteurs d'activité, tout en maintenant 
-                    les plus hauts standards de qualité et d'éthique professionnelle.
-                  </p>
-                  <ul className="mission-list">
-                    <li>Fournir des services de qualité supérieure</li>
-                    <li>Promouvoir l'innovation dans tous nos secteurs</li>
-                    <li>Créer de la valeur pour nos clients et partenaires</li>
-                    <li>Contribuer au développement durable</li>
-                  </ul>
-                </div>
-              )}
+          <FadeInOnScroll direction="up" delay={0.4}>
+            <div className="tabs">
+              <div className="tab-buttons">
+                <button 
+                  className={`tab-btn ${activeTab === 'mission' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('mission')}
+                >
+                  Notre Mission
+                </button>
+                <button 
+                  className={`tab-btn ${activeTab === 'vision' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('vision')}
+                >
+                  Notre Vision
+                </button>
+                <button 
+                  className={`tab-btn ${activeTab === 'values' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('values')}
+                >
+                  Nos Valeurs
+                </button>
+              </div>
               
-              {activeTab === 'vision' && (
-                <div className="tab-pane" data-aos="fade-up">
-                  <h3>Notre vision</h3>
-                  <p>
-                    Notre vision est de devenir le leader incontesté des services intégrés à Madagascar, 
-                    reconnu pour notre excellence opérationnelle, notre innovation constante et notre 
-                    engagement envers le développement durable. Nous aspirons à être le partenaire 
-                    privilégié de nos clients en leur offrant des solutions complètes et personnalisées.
-                  </p>
-                </div>
-              )}
+              <div className="tab-content">
+                {activeTab === 'mission' && (
+                  <FadeInOnScroll direction="up" delay={0.1}>
+                    <div className="tab-pane">
+                      <h3>Notre mission</h3>
+                      <p>
+                        Chez NELL'FAA GROUPE, nous nous engageons à fournir des solutions innovantes et sur mesure 
+                        qui dépassent les attentes de nos clients. Notre mission est de contribuer au développement 
+                        économique de Madagascar à travers nos différents secteurs d'activité, tout en maintenant 
+                        les plus hauts standards de qualité et d'éthique professionnelle.
+                      </p>
+                      <ul className="mission-list">
+                        <li>Fournir des services de qualité supérieure</li>
+                        <li>Promouvoir l'innovation dans tous nos secteurs</li>
+                        <li>Créer de la valeur pour nos clients et partenaires</li>
+                        <li>Contribuer au développement durable</li>
+                      </ul>
+                    </div>
+                  </FadeInOnScroll>
+                )}
+                
+                {activeTab === 'vision' && (
+                  <FadeInOnScroll direction="up" delay={0.1}>
+                    <div className="tab-pane">
+                      <h3>Notre vision</h3>
+                      <p>
+                        Notre vision est de devenir le leader incontesté des services intégrés à Madagascar, 
+                        reconnu pour notre excellence opérationnelle, notre innovation constante et notre 
+                        engagement envers le développement durable. Nous aspirons à être le partenaire 
+                        privilégié de nos clients en leur offrant des solutions complètes et personnalisées.
+                      </p>
+                    </div>
+                  </FadeInOnScroll>
+                )}
               
-              {activeTab === 'values' && (
-                <div className="tab-pane" data-aos="fade-up">
-                  <h3>Nos valeurs fondamentales</h3>
-                  <div className="values-grid">
-                    {[
-                      { title: 'Intégrité', description: 'Nous agissons avec honnêteté et transparence dans toutes nos relations.' },
-                      { title: 'Innovation', description: 'Nous repoussons constamment les limites pour offrir des solutions novatrices.' },
-                      { title: 'Excellence', description: 'Nous visons l\'excellence dans tout ce que nous entreprenons.' },
-                      { title: 'Engagement', description: 'Nous tenons nos promesses et nous engageons pleinement envers nos clients.' }
-                    ].map((value, index) => (
-                      <div className="value-item" key={index}>
-                        <h4>{value.title}</h4>
-                        <p>{value.description}</p>
+                {activeTab === 'values' && (
+                  <FadeInOnScroll direction="up" delay={0.1}>
+                    <div className="tab-pane">
+                      <h3>Nos valeurs fondamentales</h3>
+                      <div className="values-grid">
+                        {[
+                          { title: 'Intégrité', description: 'Nous agissons avec honnêteté et transparence dans toutes nos relations.' },
+                          { title: 'Innovation', description: 'Nous repoussons constamment les limites pour offrir des solutions novatrices.' },
+                          { title: 'Excellence', description: 'Nous visons l\'excellence dans tout ce que nous entreprenons.' },
+                          { title: 'Engagement', description: 'Nous tenons nos promesses et nous engageons pleinement envers nos clients.' }
+                        ].map((value, index) => (
+                          <div className="value-item" key={index}>
+                            <h4>{value.title}</h4>
+                            <p>{value.description}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                    </div>
+                  </FadeInOnScroll>
+                )}
+              </div>
             </div>
-          </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
       {/* Testimonials Section */}
       <section className="testimonials-section section">
         <div className="container">
-          <div className="section-header"  data-aos="fade-up">
-            <span className="section-subtitle">Témoignages</span>
-            <h2 className="section-title">Ce que disent nos clients</h2>
-            <p className="section-description">
-              Découvrez les retours de nos clients satisfaits à travers Madagascar
-            </p>
-          </div>
+          <FadeInOnScroll direction="up" delay={0.2}>
+            <div className="section-header">
+              <span className="section-subtitle">Témoignages</span>
+              <h2 className="section-title">Ce que disent nos clients</h2>
+              <p className="section-description">
+                Découvrez les retours de nos clients satisfaits à travers Madagascar
+              </p>
+            </div>
+          </FadeInOnScroll>
           
-          <div className="testimonials-slider" data-aos="fade-up">
-            {testimonials && testimonials.length > 0 ? (
-              <div className="testimonials-grid">
+          <FadeInOnScroll direction="up" delay={0.4}>
+            <div className="testimonials-slider">
+              {testimonials && testimonials.length > 0 ? (
+                <StaggerContainer>
+                  <div className="testimonials-grid">
                 {testimonials.slice(0, 3).map((testimonial, index) => (
-                  <div className="testimonial-card" key={index}>
-                    <div className="testimonial-content">
-                      <p className="testimonial-text">"{testimonial.content || 'Aucun contenu disponible'}"</p>
-                      <div className="testimonial-author">
-                        <div className="author-avatar">
-                          {testimonial.author_name ? testimonial.author_name.charAt(0) : '?'}
-                        </div>
-                        <div className="author-info">
-                          <h4>{testimonial.author_name || 'Anonyme'}</h4>
-                          {testimonial.author_position && (
-                            <span className="author-role">{testimonial.author_position}</span>
-                          )}
+                  <StaggerItem key={index} index={index}>
+                    <div className="testimonial-card">
+                      <div className="testimonial-content">
+                        <p className="testimonial-text">"{testimonial.content || 'Aucun contenu disponible'}"</p>
+                        <div className="testimonial-author">
+                          <div className="author-avatar">
+                            {testimonial.author_name ? testimonial.author_name.charAt(0) : '?'}
+                          </div>
+                          <div className="author-info">
+                            <h4>{testimonial.author_name || 'Anonyme'}</h4>
+                            {testimonial.author_position && (
+                              <span className="author-role">{testimonial.author_position}</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </StaggerItem>
                 ))}
               </div>
+                </StaggerContainer>
             ) : (
               <p className="no-testimonials">Aucun témoignage disponible pour le moment.</p>
             )}
           </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="cta-section section">
-        <div className="container" data-aos="fade-up">
-          <div className="cta-content">
-            <h2>Prêt à démarrer votre projet avec nous ?</h2>
-            <p>Contactez-nous dès aujourd'hui pour discuter de vos besoins et découvrir comment nous pouvons vous aider à atteindre vos objectifs.</p>
-            <div className="cta-buttons">
-              <Link to="/contact" className="btn btn-primary">
-                Nous contacter <FaArrowRight style={{ marginLeft: '10px' }} />
-              </Link>
-              <Link to="#" className="btn btn-outline" onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('.nav-link[aria-expanded]')?.click();
-              }}>
-                Découvrir nos secteurs
-              </Link>
+        <div className="container">
+          <FadeInOnScroll direction="up" delay={0.2}>
+            <div className="cta-content">
+              <h2>Prêt à démarrer votre projet avec nous ?</h2>
+              <p>Contactez-nous dès aujourd'hui pour discuter de vos besoins et découvrir comment nous pouvons vous aider à atteindre vos objectifs.</p>
+              <div className="cta-buttons">
+                <Link to="/contact" className="btn btn-primary">
+                  Nous contacter <FaArrowRight style={{ marginLeft: '10px' }} />
+                </Link>
+                <Link to="#" className="btn btn-outline" onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('.nav-link[aria-expanded]')?.click();
+                }}>
+                  Découvrir nos secteurs
+                </Link>
+              </div>
             </div>
-          </div>
+          </FadeInOnScroll>
         </div>
       </section>
 

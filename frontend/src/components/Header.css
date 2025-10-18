@@ -1,9 +1,23 @@
 .header {
-  background: var(--white);
-  box-shadow: var(--shadow);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: var(--transition);
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-primary);
+  opacity: 0.05;
+  z-index: -1;
 }
 
 .header-content {
@@ -205,6 +219,18 @@
   
   .dropdown-item {
     padding: 0.75rem 2rem;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    gap: var(--space-sm);
   }
 }
 

@@ -46,12 +46,20 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
+    // Initialiser AOS
     AOS.init({
       duration: 1000,
       easing: 'ease-in-out',
       once: true,
       mirror: false
     });
+
+    // Retirer la classe de chargement une fois que tout est chargé
+    if (document.body.classList.contains('loading')) {
+      setTimeout(() => {
+        document.body.classList.remove('loading');
+      }, 100);
+    }
   }, []);
 
   return (

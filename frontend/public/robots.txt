@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Fichiers à ignorer
+Disallow: /private/
+Disallow: /admin/
+
+# Sitemap
 Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml

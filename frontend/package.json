@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "set HOST=0.0.0.0 && set WDS_SOCKET_HOST=0.0.0.0 && set HTTPS=false && craco start",
-    "build": "craco build && copy public\\_redirects build\\_redirects && copy public\\google*.html build\\",
+    "build": "craco build && cp public/_redirects build/_redirects && cp public/google*.html build/",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

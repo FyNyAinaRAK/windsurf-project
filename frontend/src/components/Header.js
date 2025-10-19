@@ -40,7 +40,8 @@ const Header = () => {
           <Link to="/" className="logo">
             <img src="/images/logo/nellfaa-logo.svg" alt="Nell'Faa Groupe Logo" className="logo-image" />
             <div className="logo-text">
-              <h1>NELL'FAA GROUPE</h1>
+              <h1>NELL'FAA</h1>
+              <span>GROUPE</span>
             </div>
           </Link>
 

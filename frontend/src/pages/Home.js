@@ -15,12 +15,10 @@ const Home = () => {
   const [companyInfo, setCompanyInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('mission');
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const servicesTrackRef = React.useRef(null);
-  const slidesToShow = 4;
 
   const handleMouseDown = (e) => {
     setIsDragging(true);

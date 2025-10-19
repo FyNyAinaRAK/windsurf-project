@@ -1,0 +1,6 @@
+# Permet d'accéder aux fichiers statiques
+/sitemap.xml /sitemap.xml 200
+/robots.txt /robots.txt 200
+
+# Redirige toutes les autres requêtes vers index.html pour React Router
+/* /index.html 200

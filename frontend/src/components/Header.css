@@ -10,15 +10,15 @@
 
 .header-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
   position: relative;
-  min-height: 60px;
+  min-height: 70px;
 }
 
 .logo {
@@ -30,7 +30,9 @@
   transition: transform 0.2s ease;
   line-height: 1;
   padding: 0.5rem 0;
-  min-width: 180px;
+  min-width: auto;
+  margin-right: auto;
+  margin-left: 0.5rem;
 }
 
 .logo:active {
@@ -56,7 +58,7 @@
 }
 
 .logo-text h1 {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   margin: 0;
   white-space: nowrap;
@@ -64,6 +66,7 @@
   letter-spacing: 0.5px;
   font-family: 'Inter', sans-serif;
   text-transform: none;
+  line-height: 1.1;
 }
 
 .logo-text span {
@@ -304,10 +307,11 @@
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
-    margin-left: auto;
+    margin-left: 1rem;
     padding: 0.5rem;
     align-self: center;
     margin-top: 0;
+    margin-right: 0.5rem;
   }
   
   .logo-text h1 {
@@ -321,11 +325,36 @@
   }
   
   .logo img {
-    height: 40px;
+    height: 42px;
+    margin-right: 0.25rem;
+  }
+  
+  .logo-text h1 {
+    font-size: 1.3rem;
+    letter-spacing: 0.3px;
+  }
+  
+  .logo-text span {
+    font-size: 0.6rem;
+    letter-spacing: 1.2px;
   }
   
   .header {
     padding: 0;
+    position: relative;
+  }
+  
+  .header-content {
+    padding: 0 0.5rem;
+    min-height: 65px;
+  }
+  
+  .logo {
+    margin-left: 0.25rem;
+  }
+  
+  .menu-toggle {
+    margin-right: 0.25rem;
   }
 
   .nav {

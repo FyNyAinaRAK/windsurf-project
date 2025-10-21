@@ -1,0 +1,48 @@
+User-agent: *
+Allow: /
+
+# Fichiers et dossiers à ignorer
+Disallow: /private/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search/
+Disallow: /*.pdf$
+Disallow: /*?*
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Paramètres d'URL à ignorer
+Disallow: /*?*
+Disallow: /*&*
+
+# Sitemap
+Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml
+
+# Vitesse de crawl (requêtes par seconde)
+User-agent: *
+Crawl-delay: 10
+
+# Spécifique aux moteurs de recherche
+User-agent: Googlebot
+Allow: /*.css
+Allow: /*.js
+
+# Blocage des robots indésirables
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Règles pour les images
+User-agent: Googlebot-Image
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+
+# Version mobile
+User-agent: Googlebot-Mobile
+Allow: /

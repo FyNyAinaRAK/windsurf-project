@@ -1,11 +1,59 @@
 # Fichier robots.txt pour Nell'Faa Groupe
-# Dernière mise à jour : 2025-10-21
+# Dernière mise à jour : 2025-10-22
 
 User-agent: *
 Allow: /
+
+# Désactiver les dossiers techniques
 Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /search/
+Disallow: /*?*
+Disallow: /*.php$
+
+# Autoriser les images et les médias
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+
+# Paramètres d'exploration
+Crawl-delay: 10
 
 # Sitemap
+Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml
+
+# Configuration pour les moteurs de recherche spécifiques
+# Google
+User-agent: Googlebot
+Allow: /*
+
+# Bing
+User-agent: bingbot
+Allow: /*
+
+# Référencement local (Google My Business)
+User-agent: Googlebot-Image
+Allow: /images/
+
+# Paramètres pour les images
+User-agent: Googlebot-Image
+Disallow: /private-images/
+
+# Blocage des robots indésirables
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Paramètres de cache
+Cache-control: max-age=86400
+Expires: 86400
 Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml

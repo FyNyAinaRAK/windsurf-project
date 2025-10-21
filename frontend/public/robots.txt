@@ -9,7 +9,6 @@ Disallow: /wp-admin/
 Disallow: /wp-includes/
 Disallow: /search/
 Disallow: /*.pdf$
-Disallow: /*?*
 Disallow: /*.js$
 Disallow: /*.css$
 
@@ -21,7 +20,6 @@ Disallow: /*&*
 Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml
 
 # Vitesse de crawl (requêtes par seconde)
-User-agent: *
 Crawl-delay: 10
 
 # Spécifique aux moteurs de recherche

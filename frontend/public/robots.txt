@@ -1,4 +1,11 @@
+# Fichier robots.txt pour Nell'Faa Groupe
+# Dernière mise à jour : 2025-10-21
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
 
+# Sitemap
 Sitemap: https://nellfaa-groupe.onrender.com/sitemap.xml

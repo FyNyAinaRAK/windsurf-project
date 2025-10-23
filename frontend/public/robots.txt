@@ -40,10 +40,10 @@ Allow: /*
 
 # Référencement local (Google My Business)
 User-agent: Googlebot-Image
-Allow: /images/
 
 # Paramètres pour les images
 User-agent: Googlebot-Image
+Allow: /images/
 Disallow: /private-images/
 
 # Blocage des robots indésirables

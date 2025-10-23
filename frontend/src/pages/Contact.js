@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaBuilding, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import './Contact.css';
 
 const Contact = () => {
@@ -18,7 +22,8 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
 
   const sectors = [
     'BTP',
@@ -30,51 +35,43 @@ const Contact = () => {
     'Import/Export'
   ];
 
-  // Chargement asynchrone de Google Maps
+  // Initialisation de la carte Leaflet
   useEffect(() => {
-    if (!window.google) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places`;
-      script.async = true;
-      script.onload = () => setMapLoaded(true);
-      document.head.appendChild(script);
-    } else {
-      setMapLoaded(true);
+    if (!mapInstance.current && mapRef.current) {
+      // Configuration de l'icône du marqueur
+      const defaultIcon = L.icon({
+        iconUrl: icon,
+        shadowUrl: iconShadow,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      // Création de la carte
+      const map = L.map(mapRef.current).setView([-15.7167, 46.3167], 15);
+      
+      // Ajout de la couche de tuiles OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Ajout d'un marqueur
+      L.marker([-15.7167, 46.3167], { icon: defaultIcon })
+        .addTo(map)
+        .bindPopup("Nell'Faa Groupe Majunga")
+        .openPopup();
+
+      mapInstance.current = map;
     }
 
     return () => {
-      const script = document.querySelector('script[src*="googleapis"]');
-      if (script) document.head.removeChild(script);
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
+      }
     };
   }, []);
-
-  // Initialisation de la carte Google Maps
-  useEffect(() => {
-    if (mapLoaded && window.google) {
-      const map = new window.google.maps.Map(document.getElementById('map'), {
-        center: { lat: -15.7167, lng: 46.3167 }, // Coordonnées de Majunga
-        zoom: 15,
-        styles: [
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }]
-          },
-          {
-            featureType: 'transit',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }]
-          }
-        ]
-      });
-
-      new window.google.maps.Marker({
-        position: { lat: -15.7167, lng: 46.3167 },
-        map,
-        title: "Nell'Faa Groupe Majunga"
-      });
-    }
-  }, [mapLoaded]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -461,9 +458,7 @@ const Contact = () => {
                 </div>
               </div>
               
-              <div className="map-container">
-                <div id="map" />
-              </div>
+              <div ref={mapRef} className="map-container" style={{ height: '400px', width: '100%' }}></div>
             </motion.div>
           </motion.div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import Hero from '../components/Hero';
 import Newsletter from '../components/Newsletter';
@@ -85,6 +85,13 @@ const Home = () => {
   };
 
   useEffect(() => {
+    // Vérifier si les données sont déjà chargées
+    if (sectors.length > 0 && testimonials.length > 0 && companyInfo) {
+      return;
+    }
+
+    let isMounted = true;
+    
     const fetchData = async () => {
       try {
         const [sectorsRes, testimonialsRes, companyRes] = await Promise.all([
@@ -93,7 +100,7 @@ const Home = () => {
           axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/company-info/`)
         ]);
         
-        console.log('Données brutes des secteurs:', sectorsRes.data);
+        if (!isMounted) return;
         
         // Gérer les réponses paginées ou non
         const sectorsData = sectorsRes.data.results || sectorsRes.data;
@@ -103,34 +110,40 @@ const Home = () => {
         // S'assurer que chaque secteur a un slug
         const sectorsWithSlug = sectorsData.map(sector => {
           const slug = sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-');
-          console.log(`Secteur: ${sector.name}, Slug: ${slug}`);
           return {
             ...sector,
             slug: slug
           };
         });
         
-        console.log('Secteurs avec slugs:', sectorsWithSlug);
-        setSectors(sectorsWithSlug);
-        setTestimonials(testimonialsData);
-        setCompanyInfo(Array.isArray(companyData) ? companyData[0] : companyData);
-        setLoading(false);
+        if (isMounted) {
+          setSectors(sectorsWithSlug);
+          setTestimonials(testimonialsData);
+          setCompanyInfo(Array.isArray(companyData) ? companyData[0] : companyData);
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Erreur lors du chargement des données:', error);
-        setLoading(false);
+        if (isMounted) {
+          console.error('Erreur lors du chargement des données:', error);
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
-  }, []);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [sectors.length, testimonials.length, companyInfo]);
 
-  // Données des statistiques
-  const stats = [
+  // Données des statistiques - déplacé en dehors du composant pour éviter les recréations inutiles
+  const stats = React.useMemo(() => [
     { number: '10+', label: 'Années d\'expérience', icon: <FaChartLine className="stat-icon" /> },
     { number: '7', label: 'Secteurs d\'activité', icon: <FaBuilding className="stat-icon" /> },
     { number: '200+', label: 'Employés dévoués', icon: <FaUsers className="stat-icon" /> },
     { number: '1000+', label: 'Clients satisfaits', icon: <FaHandshake className="stat-icon" /> }
-  ];
+  ], []);
 
   if (loading) {
     return (

@@ -10,14 +10,6 @@ import '../components/Sectors.css';
 import { FaArrowRight, FaBuilding, FaChartLine, FaUsers, FaHandshake, FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Home = () => {
-  // Métadonnées pour le SEO
-  const seoData = {
-    title: "Nell'Faa Groupe | BTP, Transport, Immobilier - Leader à Madagascar",
-    description: "Nell'Faa Groupe, leader à Madagascar dans le BTP, Transport, Immobilier, Import-Export, Sécurité et Services. Découvrez nos solutions professionnelles et innovantes.",
-    keywords: "Nellfaa, Groupe Nellfaa, BTP Madagascar, Transport Majunga, Immobilier Madagascar, Services Madagascar, Import Export Madagascar, Sécurité Madagascar, Construction Madagascar, Bâtiment Travaux Publics, Logistique Madagascar",
-    canonical: "https://nellfaa-groupe.onrender.com"
-  };
-
   const [sectors, setSectors] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [companyInfo, setCompanyInfo] = useState(null);
@@ -154,69 +146,18 @@ const Home = () => {
   return (
     <div className="home">
       <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-        <meta name="keywords" content={seoData.keywords} />
-        <link rel="canonical" href={seoData.canonical} />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={seoData.canonical} />
-        <meta property="og:title" content={seoData.title} />
-        <meta property="og:description" content={seoData.description} />
-        <meta property="og:image" content={`${seoData.canonical}/images/og-image.jpg`} />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={seoData.canonical} />
-        <meta name="twitter:title" content={seoData.title} />
-        <meta name="twitter:description" content={seoData.description} />
-        <meta name="twitter:image" content={`${seoData.canonical}/images/og-image.jpg`} />
+        <title>Accueil - {companyInfo?.name || "NELL'FAA GROUPE"}</title>
+        <meta name="description" content={companyInfo?.description || "Découvrez les services de NELL'FAA GROUPE, leader dans les secteurs du BTP, Transport, Immobilier, Communication, Services, Sécurité et Import/Export à Madagascar."} />
       </Helmet>
       
       {/* Hero Section */}
       <Hero />
 
       {/* About Section */}
-      <section className="about-section section" id="a-propos">
+      <section className="about-section section">
         <div className="container">
-          <div className="section-header" data-aos="fade-up">
-            <h1>Nell'Faa Groupe - Leader du BTP et des Services à Madagascar</h1>
-            <p className="lead">Expertise, Innovation et Excellence depuis 2010</p>
-          </div>
-          
           <div className="about-content">
-            <div className="about-text" data-aos="fade-right" itemScope itemType="https://schema.org/Organization">
-              <h2>À propos de <span itemProp="name">Nell'Faa Groupe</span></h2>
-              <p>Fondé en 2010, <strong>Nell'Faa Groupe</strong> s'est imposé comme un acteur majeur dans les secteurs clés de l'économie malgache, notamment le <strong>BTP</strong>, le <strong>Transport</strong>, l'<strong>Immobilier</strong>, l'<strong>Import-Export</strong>, la <strong>Sécurité</strong> et les <strong>Services divers</strong>.</p>
-              
-              <h3>Notre engagement à Madagascar</h3>
-              <p>Basé à <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-                <span itemProp="addressLocality">Antananarivo</span>, <span itemProp="addressCountry">Madagascar</span>
-              </span>, notre groupe s'engage à fournir des solutions sur mesure adaptées aux besoins spécifiques du marché malgache et de la région.</p>
-              
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <FaBuilding className="stat-icon" />
-                  <h4>+50</h4>
-                  <p>Projets réalisés</p>
-                </div>
-                <div className="stat-item">
-                  <FaUsers className="stat-icon" />
-                  <h4>+100</h4>
-                  <p>Collaborateurs</p>
-                </div>
-                <div className="stat-item">
-                  <FaChartLine className="stat-icon" />
-                  <h4>+10 ans</h4>
-                  <p>D'expérience</p>
-                </div>
-              </div>
-              
-              <div className="cta-buttons">
-                <Link to="/a-propos" className="btn btn-primary">En savoir plus sur nous</Link>
-                <Link to="/contact" className="btn btn-outline">Nous contacter</Link>
-              </div>
+            <div className="about-text" data-aos="fade-right">
               <span className="section-subtitle">À propos de nous</span>
               <h2 className="section-title">Votre partenaire de confiance depuis 2010</h2>
               <p>
@@ -271,65 +212,16 @@ const Home = () => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section section bg-light" id="nos-services">
+      <section className="services-section section">
         <div className="container">
           <div className="section-header" data-aos="fade-up">
-            <span className="section-subtitle">Nos Secteurs d'Activité</span>
-            <h2 className="section-title">Découvrez nos expertises à Madagascar</h2>
+            <span className="section-subtitle">Nos Services</span>
+            <h2 className="section-title">Découvrez nos domaines d'expertise</h2>
             <p className="section-description">
-              Nell'Faa Groupe vous propose une gamme complète de services professionnels adaptés au marché malgache. 
-              De la construction à la logistique, en passant par l'immobilier et la sécurité, nous couvrons tous les aspects 
-              de vos projets avec professionnalisme et expertise locale.
+              Une gamme complète de services pour répondre à tous vos besoins professionnels
             </p>
           </div>
           
-          {/* Schema.org Markup for Services */}
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "itemListElement": [
-                {
-                  "@type": "Service",
-                  "name": "BTP et Construction",
-                  "description": "Construction de bâtiments, travaux publics et aménagement urbain à Madagascar.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/btp"
-                },
-                {
-                  "@type": "Service",
-                  "name": "Transport et Logistique",
-                  "description": "Solutions de transport routier et logistique adaptées aux besoins de Madagascar.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/transport"
-                },
-                {
-                  "@type": "Service",
-                  "name": "Immobilier",
-                  "description": "Gestion immobilière, promotion et transaction à Madagascar.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/immobilier"
-                },
-                {
-                  "@type": "Service",
-                  "name": "Import-Export",
-                  "name": "Sécurité et Surveillance",
-                  "description": "Services de sécurité et de surveillance pour les entreprises et particuliers à Madagascar.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/securite"
-                },
-                {
-                  "@type": "Service",
-                  "name": "Tourisme et Hôtellerie",
-                  "description": "Services touristiques et hôteliers pour découvrir Madagascar.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/tourisme"
-                },
-                {
-                  "@type": "Service",
-                  "name": "Services Divers",
-                  "description": "Une gamme complète de services complémentaires pour répondre à tous vos besoins.",
-                  "url": "https://nellfaa-groupe.onrender.com/services/services-divers"
-                }
-              ]
-            })}
-          </script>
-
           <div className="services-carousel-container">
             <button 
               className="carousel-arrow left-arrow" 
@@ -419,21 +311,37 @@ const Home = () => {
             
             <div className="tab-content">
               {activeTab === 'mission' && (
-                <div className="tab-pane active">
-                  <h3>Notre Mission</h3>
-                  <p>Fournir des solutions innovantes et durables dans tous nos secteurs d'activité, en dépassant les attentes de nos clients et en contribuant au développement de Madagascar.</p>
+                <div className="tab-pane" data-aos="fade-up">
+                  <h3>Notre mission</h3>
+                  <p>
+                    Chez NELL'FAA GROUPE, nous nous engageons à fournir des solutions innovantes et sur mesure 
+                    qui dépassent les attentes de nos clients. Notre mission est de contribuer au développement 
+                    économique de Madagascar à travers nos différents secteurs d'activité, tout en maintenant 
+                    les plus hauts standards de qualité et d'éthique professionnelle.
+                  </p>
+                  <ul className="mission-list">
+                    <li>Fournir des services de qualité supérieure</li>
+                    <li>Promouvoir l'innovation dans tous nos secteurs</li>
+                    <li>Créer de la valeur pour nos clients et partenaires</li>
+                    <li>Contribuer au développement durable</li>
+                  </ul>
                 </div>
               )}
               
               {activeTab === 'vision' && (
-                <div className="tab-pane active">
-                  <h3>Notre Vision</h3>
-                  <p>Devenir le leader incontesté dans nos domaines d'expertise à Madagascar et dans la région, en nous appuyant sur l'innovation, la qualité et l'engagement envers nos clients.</p>
+                <div className="tab-pane" data-aos="fade-up">
+                  <h3>Notre vision</h3>
+                  <p>
+                    Notre vision est de devenir le leader incontesté des services intégrés à Madagascar, 
+                    reconnu pour notre excellence opérationnelle, notre innovation constante et notre 
+                    engagement envers le développement durable. Nous aspirons à être le partenaire 
+                    privilégié de nos clients en leur offrant des solutions complètes et personnalisées.
+                  </p>
                 </div>
               )}
               
               {activeTab === 'values' && (
-                <div className="tab-pane">
+                <div className="tab-pane" data-aos="fade-up">
                   <h3>Nos valeurs fondamentales</h3>
                   <div className="values-grid">
                     {[
@@ -452,26 +360,42 @@ const Home = () => {
               )}
             </div>
           </div>
-          <div className="testimonials-grid">
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="testimonials-section section">
+        <div className="container">
+          <div className="section-header"  data-aos="fade-up">
+            <span className="section-subtitle">Témoignages</span>
+            <h2 className="section-title">Ce que disent nos clients</h2>
+            <p className="section-description">
+              Découvrez les retours de nos clients satisfaits à travers Madagascar
+            </p>
+          </div>
+          
+          <div className="testimonials-slider" data-aos="fade-up">
             {testimonials && testimonials.length > 0 ? (
-              testimonials.slice(0, 3).map((testimonial, index) => (
-                <div className="testimonial-card" key={index}>
-                  <div className="testimonial-content">
-                    <p className="testimonial-text">"{testimonial.content || 'Aucun contenu disponible'}"</p>
-                    <div className="testimonial-author">
-                      <div className="author-avatar">
-                        {testimonial.author_name ? testimonial.author_name.charAt(0) : '?'}
-                      </div>
-                      <div className="author-info">
-                        <h4>{testimonial.author_name || 'Anonyme'}</h4>
-                        {testimonial.author_position && (
-                          <span className="author-role">{testimonial.author_position}</span>
-                        )}
+              <div className="testimonials-grid">
+                {testimonials.slice(0, 3).map((testimonial, index) => (
+                  <div className="testimonial-card" key={index}>
+                    <div className="testimonial-content">
+                      <p className="testimonial-text">"{testimonial.content || 'Aucun contenu disponible'}"</p>
+                      <div className="testimonial-author">
+                        <div className="author-avatar">
+                          {testimonial.author_name ? testimonial.author_name.charAt(0) : '?'}
+                        </div>
+                        <div className="author-info">
+                          <h4>{testimonial.author_name || 'Anonyme'}</h4>
+                          {testimonial.author_position && (
+                            <span className="author-role">{testimonial.author_position}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             ) : (
               <p className="no-testimonials">Aucun témoignage disponible pour le moment.</p>
             )}
@@ -507,6 +431,6 @@ const Home = () => {
       <FeaturedNews />
     </div>
   );
-}
+};
 
 export default Home;

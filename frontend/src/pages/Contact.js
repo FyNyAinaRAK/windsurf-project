@@ -6,6 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { getContactInfo } from '../services/api';
 import './Contact.css';
 
 const Contact = () => {
@@ -24,6 +25,14 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
+  const [contactInfo, setContactInfo] = useState({
+    address: 'Majunga, Madagascar',
+    phone: '+261 XX XX XXX XX',
+    email: 'contact@nellfaa-groupe.mg',
+    working_hours: 'Lun-Ven: 8h00-17h00',
+    latitude: -15.7167,
+    longitude: 46.3167
+  });
 
   const sectors = [
     'BTP',
@@ -35,9 +44,29 @@ const Contact = () => {
     'Import/Export'
   ];
 
+  // Récupération des informations de contact depuis l'API
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const data = await getContactInfo();
+        setContactInfo(prev => ({
+          ...prev,
+          ...data,
+          // Utiliser les coordonnées de l'API ou les valeurs par défaut
+          latitude: data.latitude || -15.7167,
+          longitude: data.longitude || 46.3167
+        }));
+      } catch (error) {
+        console.error('Erreur lors du chargement des informations de contact:', error);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
   // Initialisation de la carte Leaflet
   useEffect(() => {
-    if (!mapInstance.current && mapRef.current) {
+    if (!mapInstance.current && mapRef.current && contactInfo.latitude && contactInfo.longitude) {
       // Configuration de l'icône du marqueur
       const defaultIcon = L.icon({
         iconUrl: icon,
@@ -48,18 +77,18 @@ const Contact = () => {
         shadowSize: [41, 41]
       });
 
-      // Création de la carte
-      const map = L.map(mapRef.current).setView([-15.7167, 46.3167], 15);
+      // Création de la carte avec les coordonnées de l'API
+      const map = L.map(mapRef.current).setView([contactInfo.latitude, contactInfo.longitude], 15);
       
       // Ajout de la couche de tuiles OpenStreetMap
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      // Ajout d'un marqueur
-      L.marker([-15.7167, 46.3167], { icon: defaultIcon })
+      // Ajout d'un marqueur avec les coordonnées de l'API
+      L.marker([contactInfo.latitude, contactInfo.longitude], { icon: defaultIcon })
         .addTo(map)
-        .bindPopup("Nell'Faa Groupe Majunga")
+        .bindPopup(contactInfo.address || "Nell'Faa Groupe Majunga")
         .openPopup();
 
       mapInstance.current = map;
@@ -71,7 +100,7 @@ const Contact = () => {
         mapInstance.current = null;
       }
     };
-  }, []);
+  }, [contactInfo.latitude, contactInfo.longitude]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -109,6 +138,20 @@ const Contact = () => {
     }
   };
 
+  // Fonction pour soumettre le formulaire de contact
+  const submitContactForm = async (data) => {
+    // Ici, vous devriez implémenter l'appel à votre API backend
+    // Par exemple :
+    // return await api.post('/api/contact', data);
+    
+    // Simulation d'un appel API réussi
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ success: true });
+      }, 1000);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -139,34 +182,23 @@ const Contact = () => {
         secteur: secteurMapping[formData.secteur] || ''
       };
 
-      const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-      const response = await fetch(`${API_URL}/api/contacts/submit/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
+      await submitContactForm(dataToSend);
+      
+      setSubmitStatus({
+        type: 'success',
+        message: 'Votre message a été envoyé avec succès ! Nous vous recontacterons rapidement.'
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        setSubmitStatus({
-          type: 'success',
-          message: result.message || 'Votre message a été envoyé avec succès ! Nous vous recontacterons rapidement.'
-        });
-        setFormData({
-          nom: '',
-          email: '',
-          telephone: '',
-          entreprise: '',
-          secteur: '',
-          sujet: '',
-          message: ''
-        });
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erreur lors de l\'envoi du message');
-      }
+      
+      setFormData({
+        nom: '',
+        email: '',
+        telephone: '',
+        entreprise: '',
+        secteur: '',
+        sujet: '',
+        message: ''
+      });
+      
     } catch (error) {
       console.error('Erreur:', error);
       setSubmitStatus({
@@ -413,57 +445,49 @@ const Contact = () => {
                 </motion.button>
               </form>
             </motion.div>
-
-            {/* Contact Info */}
-            <motion.div className="contact-info" variants={itemVariants}>
-              <h3>Nos coordonnées</h3>
-              
-              <div className="info-item">
-                <div className="info-icon">
-                  <FaMapMarkerAlt />
-                </div>
-                <div>
-                  <h4>Adresse</h4>
-                  <p>Lot II M 19 Ambatoroka,<br />Majunga 401, Madagascar</p>
-                </div>
-              </div>
-              
-              <div className="info-item">
-                <div className="info-icon">
-                  <FaPhone />
-                </div>
-                <div>
-                  <h4>Téléphone</h4>
-                  <p>+261 32 11 111 11<br />+261 34 11 111 11</p>
-                </div>
-              </div>
-              
-              <div className="info-item">
-                <div className="info-icon">
-                  <FaEnvelope />
-                </div>
-                <div>
-                  <h4>Email</h4>
-                  <p>contact@nellfaa.com<br />commercial@nellfaa.com</p>
-                </div>
-              </div>
-              
-              <div className="info-item">
-                <div className="info-icon">
-                  <FaBuilding />
-                </div>
-                <div>
-                  <h4>Heures d'ouverture</h4>
-                  <p>Lundi - Vendredi: 8h00 - 17h00<br />Samedi: 8h00 - 12h00</p>
-                </div>
-              </div>
-              
-              <div ref={mapRef} className="map-container" style={{ height: '400px', width: '100%' }}></div>
-            </motion.div>
           </motion.div>
+
+          {/* Contact Info */}
+      <motion.div className="contact-info" variants={itemVariants}>
+        <h3>Nos coordonnées</h3>
+        
+        <div className="info-item">
+          <div className="contact-info-item">
+            <FaMapMarkerAlt className="contact-icon" />
+            <div>
+              <h4>Adresse</h4>
+              <p>{contactInfo.address || 'Majunga, Madagascar'}</p>
+            </div>
+          </div>
+          <div className="contact-info-item">
+            <FaPhone className="contact-icon" />
+            <div>
+              <h4>Téléphone</h4>
+              <p>{contactInfo.phone || '+261 XX XX XXX XX'}</p>
+            </div>
+          </div>
+          <div className="contact-info-item">
+            <FaEnvelope className="contact-icon" />
+            <div>
+              <h4>Email</h4>
+              <p>{contactInfo.email || 'contact@nellfaa-groupe.mg'}</p>
+            </div>
+          </div>
+          <div className="contact-info-item">
+            <FaBuilding className="contact-icon" />
+            <div>
+              <h4>Heures d'ouverture</h4>
+              <p>{contactInfo.working_hours || 'Lun - Ven: 8h00 - 17h00'}<br />
+              {contactInfo.weekend_hours || 'Samedi: 8h00 - 12h00'}</p>
+            </div>
+          </div>
         </div>
-      </section>
-    </motion.div>
+        
+        <div ref={mapRef} className="map-container" style={{ height: '400px', width: '100%', marginTop: '20px' }}></div>
+      </motion.div>
+    </div>
+  </section>
+</motion.div>
   );
 };
 

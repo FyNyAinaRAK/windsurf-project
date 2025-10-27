@@ -12,7 +12,12 @@ from datetime import date, datetime
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nellfaa_backend.settings')
 django.setup()
 
-from sectors.models import Sector, Service, Project, SectorStatistic
+from sectors.models import Sector, Service, Project
+# Import SectorStatistic if available
+try:
+    from sectors.models import SectorStatistic
+except ImportError:
+    SectorStatistic = None
 from core.models import CompanyInfo, Testimonial
 from contacts.models import ContactMessage
 

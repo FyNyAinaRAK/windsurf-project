@@ -75,3 +75,19 @@ class Project(BaseModel):
     
     def __str__(self):
         return f"{self.title} ({self.sector.display_name})"
+
+
+class SectorStatistic(BaseModel):
+    """Model for sector statistics and key figures"""
+    sector = models.OneToOneField(Sector, on_delete=models.CASCADE, related_name='statistics')
+    years_experience = models.PositiveIntegerField(default=10, verbose_name="Années d'expérience")
+    completed_projects = models.PositiveIntegerField(default=100, verbose_name="Projets réalisés")
+    happy_clients = models.PositiveIntegerField(default=50, verbose_name="Clients satisfaits")
+    team_members = models.PositiveIntegerField(default=20, verbose_name="Membres d'équipe")
+    
+    class Meta:
+        verbose_name = "Statistique de secteur"
+        verbose_name_plural = "Statistiques de secteur"
+    
+    def __str__(self):
+        return f"Statistiques pour {self.sector.display_name}"

@@ -137,13 +137,53 @@ const Home = () => {
     };
   }, [sectors.length, testimonials.length, companyInfo]);
 
-  // Données des statistiques - déplacé en dehors du composant pour éviter les recréations inutiles
-  const stats = React.useMemo(() => [
-    { number: '10+', label: 'Années d\'expérience', icon: <FaChartLine className="stat-icon" /> },
-    { number: '7', label: 'Secteurs d\'activité', icon: <FaBuilding className="stat-icon" /> },
-    { number: '200+', label: 'Employés dévoués', icon: <FaUsers className="stat-icon" /> },
-    { number: '1000+', label: 'Clients satisfaits', icon: <FaHandshake className="stat-icon" /> }
-  ], []);
+  // Fonction pour calculer les années d'expérience précises
+  const calculateExperience = () => {
+    const startDate = new Date(2010, 0, 1); // 1er janvier 2010
+    const currentDate = new Date();
+    const years = currentDate.getFullYear() - startDate.getFullYear();
+    
+    // Vérifier si l'anniversaire est déjà passé cette année
+    if (currentDate.getMonth() < startDate.getMonth() || 
+        (currentDate.getMonth() === startDate.getMonth() && 
+         currentDate.getDate() < startDate.getDate())) {
+      return years - 1;
+    }
+    return years;
+  };
+
+  // Calcul des statistiques
+  const stats = React.useMemo(() => {
+    // Compter les secteurs uniques pour éviter les doublons
+    const uniqueSectors = [...new Set(sectors.map(sector => sector.name))];
+    
+    return [
+      { 
+        number: calculateExperience(), // Sans le + ici
+        label: 'Années d\'expérience', 
+        icon: <FaChartLine className="stat-icon" />, 
+        description: 'Depuis 2010' 
+      },
+      { 
+        number: uniqueSectors.length, // Nombre de secteurs uniques
+        label: 'Secteurs d\'activité', 
+        icon: <FaBuilding className="stat-icon" />, 
+        description: 'Solutions complètes' 
+      },
+      { 
+        number: 7, 
+        label: 'Employés dévoués', 
+        icon: <FaUsers className="stat-icon" />, 
+        description: 'Chefs de secteurs experts' 
+      },
+      { 
+        number: 50, 
+        label: 'Clients satisfaits', 
+        icon: <FaHandshake className="stat-icon" />, 
+        description: 'À travers Madagascar' 
+      }
+    ];
+  }, [sectors]); // Ajout de sectors aux dépendances
 
   if (loading) {
     return (
@@ -208,16 +248,55 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="stats-section section">
+      <section className="stats-section section" style={{ backgroundColor: '#f9f9f9', padding: '80px 0' }}>
         <div className="container">
+          <div className="section-header" data-aos="fade-up">
+            <h2 className="section-title">Notre Impact en Chiffres</h2>
+            <p className="section-description">Une croissance mesurable, un impact réel</p>
+          </div>
           <div className="stats-grid">
             {stats.map((stat, index) => (
-              <div className="stat-card" key={index} data-aos="fade-up" data-aos-delay={index * 100}>
-                <div className="stat-icon-container">
+              <div 
+                className="stat-item" 
+                key={index} 
+                data-aos="fade-up" 
+                data-aos-delay={index * 100}
+                data-aos-duration="600"
+                data-aos-easing="ease-out-cubic"
+              >
+                <div 
+                  className="stat-icon-container"
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 100 + 200}
+                  data-aos-duration="800"
+                >
                   {stat.icon}
                 </div>
-                <h3 className="number" data-count={stat.number.replace('+', '')}>0</h3>
-                <p>{stat.label}</p>
+                <h3 
+                  className="stat-number"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 100}
+                  data-aos-duration="600"
+                >
+                  {stat.number}
+                  {[2, 3].includes(index) && '+'} {/* Ajoute le + seulement pour les employés (index 2) et clients (index 3) */}
+                </h3>
+                <p 
+                  className="stat-label"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 150}
+                  data-aos-duration="600"
+                >
+                  {stat.label}
+                </p>
+                <p 
+                  className="stat-description"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 200}
+                  data-aos-duration="600"
+                >
+                  {stat.description}
+                </p>
               </div>
             ))}
           </div>
@@ -375,6 +454,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
 
       {/* Testimonials Section */}
       <section className="testimonials-section section">

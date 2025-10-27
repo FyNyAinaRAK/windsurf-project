@@ -1,11 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { getCompanyInfo } from '../services/api';
 import './Footer.css';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
   const navigate = useNavigate();
+  const [companyInfo, setCompanyInfo] = useState({
+    name: "Nell'Faa Groupe Majunga",
+    description: "Conglomérat leader à Madagascar, actif dans 7 secteurs d'activité pour répondre à tous vos besoins professionnels et personnels.",
+    address: "Majunga, Madagascar",
+    phone: "+261 XX XX XXX XX",
+    email: "contact@nellfaa-groupe.mg",
+    business_hours: "Lun-Ven: 8h00-17h00\nSam: 8h00-12h00",
+    social_media: {
+      facebook: 'https://facebook.com',
+      linkedin: 'https://linkedin.com'
+    }
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const data = await getCompanyInfo();
+        setCompanyInfo(prev => ({
+          ...prev,
+          ...data,
+          social_media: {
+            ...prev.social_media,
+            ...(data.social_media || {})
+          }
+        }));
+      } catch (error) {
+        console.error('Erreur lors du chargement des informations de l\'entreprise:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompanyInfo();
+  }, []);
 
   const handleNewsletterClick = (e) => {
     e.preventDefault();
@@ -26,12 +62,10 @@ const Footer = () => {
   };
 
   const handleSocialClick = (platform) => {
-    // Logique pour chaque réseau social
-    const urls = {
-      facebook: 'https://facebook.com',
-      linkedin: 'https://linkedin.com'
-    };
-    window.open(urls[platform], '_blank', 'noopener,noreferrer');
+    const url = companyInfo.social_media?.[platform];
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   const sectors = [
@@ -49,11 +83,8 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>Nell'Faa Groupe Majunga</h3>
-            <p>
-              Conglomérat leader à Madagascar, actif dans 7 secteurs d'activité 
-              pour répondre à tous vos besoins professionnels et personnels.
-            </p>
+            <h3>{companyInfo.name}</h3>
+            <p>{companyInfo.description}</p>
             <div className="social-links">
               <button 
                 onClick={() => handleSocialClick('facebook')} 
@@ -100,10 +131,15 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Contact</h4>
             <div className="contact-info">
-              <p>📍 Majunga, Madagascar<br />BP XXX Majunga 401</p>
-              <p>📞 +261 XX XX XXX XX</p>
-              <p>✉️ contact@nellfaa-groupe.mg</p>
-              <p>🕒 Lun-Ven: 8h00-17h00<br />Sam: 8h00-12h00</p>
+              <p>📍 {companyInfo.address}</p>
+              <p>📞 {companyInfo.phone}</p>
+              <p>✉️ {companyInfo.email}</p>
+              <p>🕒 {companyInfo.business_hours && companyInfo.business_hours.split('\n').map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}</p>
             </div>
             <div className="footer-newsletter">
               <h5>Newsletter</h5>
@@ -120,7 +156,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} Nell'Faa Groupe Majunga. Tous droits réservés.</p>
+          <p>&copy; {currentYear} {companyInfo.name}. Tous droits réservés.</p>
           <div className="footer-bottom-links">
             <span className="footer-link-inactive">Mentions légales</span>
             <span className="footer-link-inactive">Politique de confidentialité</span>

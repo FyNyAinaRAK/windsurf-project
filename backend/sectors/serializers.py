@@ -1,17 +1,11 @@
 from rest_framework import serializers
-from .models import Sector, Service, Project, SectorStatistic
+from .models import Sector, Service, Project
 
 
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ['id', 'name', 'description', 'icon', 'is_administrative', 'order']
-
-
-class SectorStatisticSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SectorStatistic
-        fields = ['id', 'label', 'value', 'unit', 'order']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -39,7 +33,6 @@ class SectorDetailSerializer(serializers.ModelSerializer):
     administrative_services = serializers.SerializerMethodField()
     technical_services = serializers.SerializerMethodField()
     projects = ProjectSerializer(many=True, read_only=True)
-    statistics = SectorStatisticSerializer(many=True, read_only=True)
     
     class Meta:
         model = Sector
@@ -47,7 +40,7 @@ class SectorDetailSerializer(serializers.ModelSerializer):
             'id', 'name', 'display_name', 'description', 'short_description',
             'icon', 'image', 'meta_title', 'meta_description',
             'services', 'administrative_services', 'technical_services',
-            'projects', 'statistics'
+            'projects'
         ]
     
     def get_administrative_services(self, obj):

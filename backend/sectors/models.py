@@ -75,20 +75,3 @@ class Project(BaseModel):
     
     def __str__(self):
         return f"{self.title} ({self.sector.display_name})"
-
-
-class SectorStatistic(BaseModel):
-    """Model for sector statistics"""
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name='statistics')
-    label = models.CharField(max_length=100, verbose_name="Libellé")
-    value = models.CharField(max_length=20, verbose_name="Valeur")
-    unit = models.CharField(max_length=20, blank=True, verbose_name="Unité")
-    order = models.IntegerField(default=0, verbose_name="Ordre d'affichage")
-    
-    class Meta:
-        verbose_name = "Statistique secteur"
-        verbose_name_plural = "Statistiques secteurs"
-        ordering = ['sector', 'order']
-    
-    def __str__(self):
-        return f"{self.sector.display_name} - {self.label}: {self.value}{self.unit}"

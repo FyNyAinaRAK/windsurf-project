@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import './About.css';
@@ -82,11 +83,99 @@ const About = () => {
     };
   }, []);
 
+  // Récupérer les secteurs depuis l'API
+  const [sectors, setSectors] = useState([]);
+  
+  useEffect(() => {
+    const fetchSectors = async () => {
+      try {
+        const apiUrl = `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000'}/api/sectors/`;
+        console.log('Tentative de récupération des secteurs depuis:', apiUrl);
+        
+        const response = await axios.get(apiUrl);
+        console.log('Réponse des secteurs:', response.data);
+        
+        // Gérer différents formats de réponse
+        const sectorsData = response.data.results || response.data || [];
+        console.log('Secteurs récupérés:', sectorsData);
+        
+        // Si aucun secteur n'est trouvé, utiliser une valeur par défaut
+        if (!sectorsData || sectorsData.length === 0) {
+          console.warn('Aucun secteur trouvé dans la réponse de l\'API');
+          // Valeurs par défaut pour les tests
+          setSectors([
+            { id: 1, name: 'BTP' },
+            { id: 2, name: 'Transport' },
+            { id: 3, name: 'Immobilier' },
+            { id: 4, name: 'Communication' },
+            { id: 5, name: 'Services' },
+            { id: 6, name: 'Sécurité' },
+            { id: 7, name: 'Import/Export' }
+          ]);
+        } else {
+          setSectors(sectorsData);
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des secteurs:', error);
+        // En cas d'erreur, utiliser des valeurs par défaut
+        setSectors([
+          { id: 1, name: 'BTP' },
+          { id: 2, name: 'Transport' },
+          { id: 3, name: 'Immobilier' },
+          { id: 4, name: 'Communication' },
+          { id: 5, name: 'Services' },
+          { id: 6, name: 'Sécurité' },
+          { id: 7, name: 'Import/Export' }
+        ]);
+      }
+    };
+
+    fetchSectors();
+  }, []);
+
+  // Calcul des années d'expérience depuis le 1er janvier 2010
+  const calculateExperience = () => {
+    const startDate = new Date(2010, 0, 1); // 1er janvier 2010
+    const currentDate = new Date();
+    let years = currentDate.getFullYear() - startDate.getFullYear();
+    
+    // Vérifier si l'anniversaire est déjà passé cette année
+    if (currentDate.getMonth() < startDate.getMonth() || 
+        (currentDate.getMonth() === startDate.getMonth() && 
+         currentDate.getDate() < startDate.getDate())) {
+      return years - 1;
+    }
+    return years;
+  };
+
+  // Compter le nombre de secteurs uniques
+  const uniqueSectors = [...new Set(sectors.map(sector => sector.name))];
+  
   const stats = [
-    { number: '10+', label: 'Années d\'expérience', icon: <FaChartLine className="stat-icon" /> },
-    { number: '7', label: 'Secteurs d\'activité', icon: <FaBuilding className="stat-icon" /> },
-    { number: '200+', label: 'Employés dévoués', icon: <FaUsers className="stat-icon" /> },
-    { number: '1000+', label: 'Clients satisfaits', icon: <FaHandshake className="stat-icon" /> }
+    { 
+      number: calculateExperience(), // Sans le +
+      label: 'Années d\'expérience', 
+      icon: <FaChartLine className="stat-icon" />,
+      description: 'Depuis 2010' 
+    },
+    { 
+      number: uniqueSectors.length, // Nombre de secteurs uniques
+      label: 'Secteurs d\'activité', 
+      icon: <FaBuilding className="stat-icon" />,
+      description: 'Solutions complètes' 
+    },
+    { 
+      number: 7, // Sans le +
+      label: 'Employés dévoués', 
+      icon: <FaUsers className="stat-icon" />,
+      description: 'Chefs de secteurs experts' 
+    },
+    { 
+      number: 50, // Sans le +
+      label: 'Clients satisfaits', 
+      icon: <FaHandshake className="stat-icon" />,
+      description: 'À travers Madagascar' 
+    }
   ];
 
   const values = [
@@ -231,19 +320,54 @@ const About = () => {
       {/* Chiffres clés */}
       <section className="numbers section" style={{ backgroundColor: '#f8fafc' }}>
         <div className="container">
-          <div className="section-title" data-aos="fade-up">
-            <h2>Notre Impact en Chiffres</h2>
-            <p>Une croissance mesurable, un impact réel sur l'économie malgache</p>
+          <div className="section-header" data-aos="fade-up">
+            <h2 className="section-title">Notre Impact en Chiffres</h2>
+            <p className="section-description">Une croissance mesurable, un impact réel sur l'économie malgache</p>
           </div>
           
           <div className="stats-grid">
             {stats.map((stat, index) => (
-              <div className="stat-card" key={index} data-aos="fade-up" data-aos-delay={index * 100}>
-                <div className="stat-icon-container">
+              <div 
+                className="stat-item" 
+                key={index} 
+                data-aos="fade-up" 
+                data-aos-delay={index * 100}
+                data-aos-duration="600"
+                data-aos-easing="ease-out-cubic"
+              >
+                <div 
+                  className="stat-icon-container"
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 100 + 200}
+                  data-aos-duration="800"
+                >
                   {stat.icon}
                 </div>
-                <h3 className="number" data-count={stat.number.replace('+', '')}>0</h3>
-                <p>{stat.label}</p>
+                <h3 
+                  className="stat-number"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 100}
+                  data-aos-duration="600"
+                >
+                  {stat.number}
+                  {[2, 3].includes(index) && '+'} {/* Ajoute le + seulement pour les employés (index 2) et clients (index 3) */}
+                </h3>
+                <p 
+                  className="stat-label"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 150}
+                  data-aos-duration="600"
+                >
+                  {stat.label}
+                </p>
+                <p 
+                  className="stat-description"
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 200}
+                  data-aos-duration="600"
+                >
+                  {stat.description}
+                </p>
               </div>
             ))}
           </div>

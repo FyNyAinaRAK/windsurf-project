@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Sector, Service, Project, SectorStatistic
+from .models import Sector, Service, Project
 
 
 class ServiceInline(admin.TabularInline):
@@ -7,11 +7,6 @@ class ServiceInline(admin.TabularInline):
     extra = 1
     fields = ['name', 'description', 'icon', 'is_administrative', 'order', 'is_active']
 
-
-class SectorStatisticInline(admin.TabularInline):
-    model = SectorStatistic
-    extra = 1
-    fields = ['label', 'value', 'unit', 'order', 'is_active']
 
 
 @admin.register(Sector)
@@ -21,7 +16,7 @@ class SectorAdmin(admin.ModelAdmin):
     search_fields = ['display_name', 'description']
     list_editable = ['order', 'is_active']
     ordering = ['order', 'name']
-    inlines = [ServiceInline, SectorStatisticInline]
+    inlines = [ServiceInline]
     
     fieldsets = (
         ('Informations générales', {
@@ -63,12 +58,3 @@ class ProjectAdmin(admin.ModelAdmin):
             'fields': ('client', 'location', 'completion_date', 'budget_range', 'duration')
         }),
     )
-
-
-@admin.register(SectorStatistic)
-class SectorStatisticAdmin(admin.ModelAdmin):
-    list_display = ['sector', 'label', 'value', 'unit', 'order', 'is_active']
-    list_filter = ['sector', 'is_active']
-    search_fields = ['label', 'value']
-    list_editable = ['order', 'is_active']
-    ordering = ['sector', 'order']

@@ -974,32 +974,142 @@ p {
   margin-top: 3rem;
 }
 
-.stat-card {
+/* Styles pour les cartes de statistiques */
+.stat-item {
   background: white;
   padding: 2.5rem 1.5rem;
   border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transform: translateY(0);
 }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.1) 0%, rgba(26, 54, 93, 0.15) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+.stat-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(66, 153, 225, 0.2);
+}
+
+.stat-item:hover::before {
+  opacity: 1;
+}
+
+/* Conteneur d'icônes */
+.stat-icon-container {
+  font-size: 2.2rem;
+  color: var(--accent-color);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background: rgba(66, 153, 225, 0.1);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-icon-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-color); /* Fond plus foncé pour un meilleur contraste */
+  opacity: 0;
+  border-radius: 50%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item:hover .stat-icon-container {
+  transform: scale(1.1);
+  color: white;
+}
+
+.stat-item:hover .stat-icon-container::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .stat-icon {
-  font-size: 2rem;
-  color: var(--accent-color);
-  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--accent-color); /* Couleur d'accent par défaut */
 }
 
-.stat-card h3 {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
+.stat-item:hover .stat-icon {
+  transform: scale(1.1);
+  color: white; /* Couleur blanche au survol pour contraster avec le fond bleu */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); /* Ombre portée pour améliorer la visibilité */
+}
+
+/* Numéro de la statistique */
+.stat-number {
+  font-size: 2.8rem;
   font-weight: 800;
+  color: var(--primary-color);
+  margin: 0.5rem 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  line-height: 1.2;
+}
+
+.stat-item:hover .stat-number {
+  color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+/* Libellé de la statistique */
+.stat-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0.5rem 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-item:hover .stat-label {
+  color: var(--accent-color);
+  transform: translateY(2px);
+}
+
+/* Description de la statistique */
+.stat-description {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin: 0.5rem 0 0;
+  opacity: 0.9;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-item:hover .stat-description {
+  opacity: 1;
+  transform: translateY(2px);
+  color: var(--text-dark);
 }
 
 /* Values Grid */

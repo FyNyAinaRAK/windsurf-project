@@ -6,7 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import { getContactInfo } from '../services/api';
+import { getContactInfo, getCompanyInfo, submitContactForm } from '../services/api';
 import './Contact.css';
 
 const Contact = () => {
@@ -26,10 +26,10 @@ const Contact = () => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [contactInfo, setContactInfo] = useState({
-    address: 'Majunga, Madagascar',
-    phone: '+261 XX XX XXX XX',
-    email: 'contact@nellfaa-groupe.mg',
-    working_hours: 'Lun-Ven: 8h00-17h00',
+    address: '',
+    phone: '',
+    email: '',
+    business_hours: 'Lun-Ven: 8h00-17h00\nSam: 8h00-12h00',
     latitude: -15.7167,
     longitude: 46.3167
   });
@@ -44,24 +44,34 @@ const Contact = () => {
     'Import/Export'
   ];
 
-  // Récupération des informations de contact depuis l'API
+  // Récupération des informations de l'entreprise depuis l'API
   useEffect(() => {
-    const fetchContactInfo = async () => {
+    const fetchCompanyInfo = async () => {
       try {
-        const data = await getContactInfo();
+        const companyData = await getCompanyInfo();
+        console.log('Données de l\'entreprise:', companyData); // Pour le débogage
         setContactInfo(prev => ({
           ...prev,
-          ...data,
-          // Utiliser les coordonnées de l'API ou les valeurs par défaut
-          latitude: data.latitude || -15.7167,
-          longitude: data.longitude || 46.3167
+          address: companyData.address || 'Majunga, Madagascar',
+          phone: companyData.phone || '+261 XX XX XXX XX',
+          email: companyData.email || 'contact@nellfaa-groupe.mg',
+          business_hours: companyData.business_hours || 'Lun-Ven: 8h00-17h00\nSam: 8h00-12h00'
         }));
       } catch (error) {
-        console.error('Erreur lors du chargement des informations de contact:', error);
+        console.error('Erreur lors du chargement des informations de l\'entreprise:', error);
+        // Valeurs par défaut en cas d'erreur
+        setContactInfo(prev => ({
+          ...prev,
+          address: 'Majunga, Madagascar',
+          phone: '+261 XX XX XXX XX',
+          email: 'contact@nellfaa-groupe.mg',
+          working_hours: 'Lun-Sam: 8h00-18h00',
+          weekend_hours: 'Dim: Fermé'
+        }));
       }
     };
 
-    fetchContactInfo();
+    fetchCompanyInfo();
   }, []);
 
   // Initialisation de la carte Leaflet
@@ -138,20 +148,6 @@ const Contact = () => {
     }
   };
 
-  // Fonction pour soumettre le formulaire de contact
-  const submitContactForm = async (data) => {
-    // Ici, vous devriez implémenter l'appel à votre API backend
-    // Par exemple :
-    // return await api.post('/api/contact', data);
-    
-    // Simulation d'un appel API réussi
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true });
-      }, 1000);
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -182,7 +178,11 @@ const Contact = () => {
         secteur: secteurMapping[formData.secteur] || ''
       };
 
-      await submitContactForm(dataToSend);
+      const response = await submitContactForm(dataToSend);
+      
+      if (!response.success) {
+        throw new Error('Échec de l\'envoi du formulaire');
+      }
       
       setSubmitStatus({
         type: 'success',
@@ -237,86 +237,53 @@ const Contact = () => {
 
   return (
     <motion.div 
-      className="contact page-transition"
+      className="contact-page"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <Helmet>
-        <title>Contact & Devis - Nell'Faa Groupe Majunga</title>
-        <meta name="description" content="Contactez Nell'Faa Groupe Majunga pour vos projets. Demandez un devis gratuit et personnalisé pour tous nos secteurs d'activité." />
+        <title>Contact - Nell'Faa Groupe</title>
+        <meta name="description" content="Contactez-nous pour toute demande d'information ou de devis. Notre équipe est à votre écoute." />
       </Helmet>
-
+      
       {/* Hero Section */}
-      <motion.section 
-        className="contact-hero"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
+      <section className="contact-hero">
         <div className="container">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+          <motion.h1 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
           >
             Contactez-nous
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
             Notre équipe est à votre écoute pour répondre à toutes vos questions et vous accompagner dans vos projets.
           </motion.p>
-          <motion.a 
-            href="#contact-form" 
-            className="cta-button"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Envoyer un message
-          </motion.a>
         </div>
         
-        {/* Vague décorative en bas du hero */}
         <div className="wave-shape">
           <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" className="shape-fill"></path>
-            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,141.56,70.72,12.4,20.9,18.75,43.2,21.91,67.6,1.1,8.48.69,15.23-2.3,22.07-1.87,4.27-5.02,8.14-12.02,9.73-3.33.81-6.48.67-9.31.35-13.07-1.46-19.16-8.74-27.49-18.17-5.78-6.59-12.75-13.9-22.2-15.66-12.12-2.27-24.23,4.3-32.31,12.8-6.71,7.13-12.01,16.38-11.68,27.35.5,16.69,16.56,29.18,33.37,25.68,21.34-4.41,37.22-22.41,47.39-40.63,8.3-14.93,12.15-30.31,12.15-45.63C1200,9.34,1186.57,0,1170.4,0Z" className="shape-fill" opacity=".5"></path>
-            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" className="shape-fill"></path>
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
           </svg>
         </div>
-      </motion.section>
+      </section>
 
       {/* Contact Content */}
-      <section className="contact-content-wrapper">
-        <div className="container">
-          <motion.div 
-            className="contact-content"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+      <div className="contact-content-wrapper">
+        <div className="contact-container">
+          <div className="contact-layout">
             {/* Contact Form */}
-            <motion.div className="contact-form-container" variants={itemVariants}>
+            <motion.div 
+              className="contact-form-container"
+              variants={itemVariants}
+            >
               <h2>Demander un devis</h2>
               <p>Remplissez ce formulaire et nous vous recontacterons dans les plus brefs délais.</p>
-              
-              {submitStatus.message && (
-                <div className={`submit-message ${submitStatus.type}`}>
-                  {submitStatus.type === 'success' ? (
-                    <FaCheckCircle className="icon" />
-                  ) : (
-                    <FaExclamationCircle className="icon" />
-                  )}
-                  <span>{submitStatus.message}</span>
-                </div>
-              )}
-              
               <form id="contact-form" onSubmit={handleSubmit} className="contact-form">
                 <div className="form-row">
                   <div className="form-group">
@@ -444,50 +411,80 @@ const Contact = () => {
                   {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </motion.button>
               </form>
+              
+              {/* Message de statut de soumission */}
+              {submitStatus.message && (
+                <div className={`submit-message ${submitStatus.type}`}>
+                  {submitStatus.type === 'success' ? (
+                    <FaCheckCircle className="icon" />
+                  ) : (
+                    <FaExclamationCircle className="icon" />
+                  )}
+                  <span>{submitStatus.message}</span>
+                </div>
+              )}
             </motion.div>
-          </motion.div>
 
-          {/* Contact Info */}
-      <motion.div className="contact-info" variants={itemVariants}>
-        <h3>Nos coordonnées</h3>
-        
-        <div className="info-item">
-          <div className="contact-info-item">
-            <FaMapMarkerAlt className="contact-icon" />
-            <div>
-              <h4>Adresse</h4>
-              <p>{contactInfo.address || 'Majunga, Madagascar'}</p>
-            </div>
-          </div>
-          <div className="contact-info-item">
-            <FaPhone className="contact-icon" />
-            <div>
-              <h4>Téléphone</h4>
-              <p>{contactInfo.phone || '+261 XX XX XXX XX'}</p>
-            </div>
-          </div>
-          <div className="contact-info-item">
-            <FaEnvelope className="contact-icon" />
-            <div>
-              <h4>Email</h4>
-              <p>{contactInfo.email || 'contact@nellfaa-groupe.mg'}</p>
-            </div>
-          </div>
-          <div className="contact-info-item">
-            <FaBuilding className="contact-icon" />
-            <div>
-              <h4>Heures d'ouverture</h4>
-              <p>{contactInfo.working_hours || 'Lun - Ven: 8h00 - 17h00'}<br />
-              {contactInfo.weekend_hours || 'Samedi: 8h00 - 12h00'}</p>
-            </div>
+            {/* Contact Info */}
+            <motion.div 
+              className="contact-info-container"
+              variants={itemVariants}
+            >
+              <h2>Nos coordonnées</h2>
+              
+              <div className="contact-info-item">
+                <FaMapMarkerAlt className="contact-icon" />
+                <div>
+                  <h4>Adresse</h4>
+                  <p>{contactInfo.address || 'Majunga, Madagascar'}</p>
+                </div>
+              </div>
+              
+              <div className="contact-info-item">
+                <FaPhone className="contact-icon" />
+                <div>
+                  <h4>Téléphone</h4>
+                  <p>{contactInfo.phone || '+261 XX XX XXX XX'}</p>
+                </div>
+              </div>
+              
+              <div className="contact-info-item">
+                <FaEnvelope className="contact-icon" />
+                <div>
+                  <h4>Email</h4>
+                  <p>{contactInfo.email || 'contact@nellfaa-groupe.mg'}</p>
+                </div>
+              </div>
+              
+              <div className="contact-info-item">
+                <FaBuilding className="contact-icon" />
+                <div>
+                  <h4>Heures d'ouverture</h4>
+                  <p>{contactInfo.business_hours && contactInfo.business_hours.split('\n').map((line, i) => (
+                    <React.Fragment key={i}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}</p>
+                </div>
+              </div>
+              
+              <div 
+                ref={mapRef} 
+                className="map-container" 
+                style={{ 
+                  height: '250px', 
+                  width: '100%', 
+                  marginTop: '20px', 
+                  borderRadius: '8px', 
+                  overflow: 'hidden' 
+                }}
+              ></div>
+            </motion.div>
           </div>
         </div>
-        
-        <div ref={mapRef} className="map-container" style={{ height: '400px', width: '100%', marginTop: '20px' }}></div>
-      </motion.div>
-    </div>
-  </section>
-</motion.div>
+      </div>
+    </motion.div>
   );
 };
 

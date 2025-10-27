@@ -38,6 +38,44 @@ class CompanyInfoListView(generics.ListAPIView):
     serializer_class = CompanyInfoSerializer
 
 
+class CompanyInfoView(generics.RetrieveAPIView):
+    """Get company information in a specific format for the frontend"""
+    queryset = CompanyInfo.objects.filter(is_active=True)
+    serializer_class = CompanyInfoSerializer
+    
+    def get_object(self):
+        # Retourne le premier enregistrement actif ou crée un par défaut
+        return CompanyInfo.objects.filter(is_active=True).first() or CompanyInfo.objects.create(
+            name="Nell'Faa Groupe Majunga",
+            description="Conglomérat leader à Madagascar, actif dans 7 secteurs d'activité pour répondre à tous vos besoins professionnels et personnels.",
+            address="Majunga, Madagascar",
+            phone="+261 XX XX XXX XX",
+            email="contact@nellfaa-groupe.mg",
+            working_hours="Lun-Ven: 8h00-17h00",
+            weekend_hours="Sam: 8h00-12h00"
+        )
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        
+        # Formater les données pour le frontend
+        data = {
+            'name': instance.name,
+            'description': instance.description,
+            'address': instance.address,
+            'phone': instance.phone,
+            'email': instance.email,
+            'business_hours': instance.business_hours,
+            'social_media': {
+                'facebook': instance.facebook_url or 'https://facebook.com',
+                'linkedin': instance.linkedin_url or 'https://linkedin.com'
+            }
+        }
+        
+        return Response(data)
+
+
 class TestimonialListView(generics.ListAPIView):
     """List all active testimonials"""
     queryset = Testimonial.objects.filter(is_active=True)

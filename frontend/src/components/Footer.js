@@ -15,8 +15,8 @@ const Footer = () => {
     email: "contact@nellfaa-groupe.mg",
     business_hours: "Lun-Ven: 8h00-17h00\nSam: 8h00-12h00",
     social_media: {
-      facebook: 'https://facebook.com',
-      linkedin: 'https://linkedin.com'
+      facebook: 'https://www.facebook.com/people/NellFaa-Groupe-Officiel/100077532708443/',
+      linkedin: 'https://www.linkedin.com/in/brunelleschi-randrianjatovo-449ba0182/?originalSubdomain=mg'
     }
   });
   const [loading, setLoading] = useState(true);

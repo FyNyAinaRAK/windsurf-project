@@ -7,6 +7,7 @@ import Newsletter from '../components/Newsletter';
 import FeaturedNews from '../components/FeaturedNews';
 import './Home.css';
 import '../components/Sectors.css';
+import { motion } from 'framer-motion';
 import { FaArrowRight, FaBuilding, FaChartLine, FaUsers, FaHandshake, FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Home = () => {
@@ -219,7 +220,7 @@ const Home = () => {
                 Notre engagement envers l'excellence et l'innovation nous permet de proposer 
                 des solutions intégrées répondant aux besoins les plus exigeants.
               </p>
-              <div className="features-grid">
+              <div className="features-grid" data-aos="fade-up" data-aos-delay="200">
                 {[
                   "Expertise multisectorielle",
                   "Approche client personnalisée",
@@ -261,22 +262,18 @@ const Home = () => {
                 key={index} 
                 data-aos="fade-up" 
                 data-aos-delay={index * 100}
-                data-aos-duration="600"
-                data-aos-easing="ease-out-cubic"
               >
                 <div 
                   className="stat-icon-container"
                   data-aos="zoom-in"
-                  data-aos-delay={index * 100 + 200}
-                  data-aos-duration="800"
+                  data-aos-delay={index * 100 + 100}
                 >
                   {stat.icon}
                 </div>
                 <h3 
                   className="stat-number"
                   data-aos="fade-up"
-                  data-aos-delay={index * 100 + 100}
-                  data-aos-duration="600"
+                  data-aos-delay={index * 100 + 200}
                 >
                   {stat.number}
                   {[2, 3].includes(index) && '+'} {/* Ajoute le + seulement pour les employés (index 2) et clients (index 3) */}
@@ -284,16 +281,14 @@ const Home = () => {
                 <p 
                   className="stat-label"
                   data-aos="fade-up"
-                  data-aos-delay={index * 100 + 150}
-                  data-aos-duration="600"
+                  data-aos-delay={index * 100 + 300}
                 >
                   {stat.label}
                 </p>
                 <p 
                   className="stat-description"
                   data-aos="fade-up"
-                  data-aos-delay={index * 100 + 200}
-                  data-aos-duration="600"
+                  data-aos-delay={index * 100 + 400}
                 >
                   {stat.description}
                 </p>
@@ -337,24 +332,26 @@ const Home = () => {
                 }}
               >
                 {sectors.map((sector, index) => (
-                  <div 
-                    className="service-card" 
-                    key={sector.id} 
-                    data-aos="fade-up" 
+                  <motion.div
+                    className="service-card"
+                    key={sector.id}
+                    data-aos="fade-up"
                     data-aos-delay={index * 100}
+                    whileHover={{ scale: 1.05, rotateX: 10, rotateY: -10 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <div className="service-icon">
                       {sector.icon || <FaBuilding />}
                     </div>
                     <h3>{sector.name}</h3>
                     <p>{sector.short_description || ''}</p>
-                    <Link 
-                      to={`/${sector.name === 'import_export' ? 'import-export' : (sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-'))}`} 
+                    <Link
+                      to={`/${sector.name === 'import_export' ? 'import-export' : (sector.slug || sector.name.toLowerCase().replace(/\s+/g, '-'))}`}
                       className="btn btn-link"
                     >
                       En savoir plus <FaArrowRight />
                     </Link>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>

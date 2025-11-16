@@ -47,10 +47,10 @@ function App() {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
+      duration: 1200,
+      easing: 'ease-in-out-cubic',
       once: true,
-      mirror: false
+      offset: 100,
     });
   }, []);
 

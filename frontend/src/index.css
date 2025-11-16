@@ -22,24 +22,24 @@ code {
 
 /* Variables CSS pour la cohérence des couleurs */
 :root {
-  --primary-color: #2c3e50;
-  --secondary-color: #3498db;
-  --accent-color: #e74c3c;
-  --text-color: #333;
-  --background-light: #f8f9fa;
+  --primary-color: #1d1d1f;
+  --secondary-color: #6e6e73;
+  --accent-color: #007aff;
+  --text-color: #1d1d1f;
+  --background-light: #f5f5f7;
   --white: #ffffff;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Styles de base pour les liens et boutons */
 a, button {
-  color: var(--primary-color);
+  color: var(--accent-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover, button:hover {
-  color: var(--accent-color);
+  color: var(--primary-color);
 }
 
 /* Reset des styles de liste */
@@ -49,9 +49,10 @@ ul, ol {
 
 /* Styles pour les titres */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--primary-color);
+  color: var(--text-color);
   margin-bottom: 1rem;
   line-height: 1.2;
+  font-weight: 600;
 }
 
 /* Conteneur principal */
@@ -71,17 +72,18 @@ section {
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn:hover {
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   color: white;
+  transform: translateY(-2px);
 }
 
 /* Responsive design */

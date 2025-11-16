@@ -1,3 +1,4 @@
+/* From index.css */
 * {
   margin: 0;
   padding: 0;
@@ -20,42 +21,36 @@ code {
     monospace;
 }
 
-/* Variables CSS pour la cohérence des couleurs */
 :root {
-  --primary-color: #1d1d1f;
-  --secondary-color: #6e6e73;
-  --accent-color: #007aff;
-  --text-color: #1d1d1f;
-  --background-light: #f5f5f7;
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --text-color: #333;
+  --background-light: #f8f9fa;
   --white: #ffffff;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styles de base pour les liens et boutons */
 a, button {
-  color: var(--accent-color);
+  color: var(--primary-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover, button:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
 }
 
-/* Reset des styles de liste */
 ul, ol {
   list-style: none;
 }
 
-/* Styles pour les titres */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-color);
+  color: var(--primary-color);
   margin-bottom: 1rem;
   line-height: 1.2;
-  font-weight: 600;
 }
 
-/* Conteneur principal */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -63,32 +58,65 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 1rem;
 }
 
-/* Section de base */
 section {
   padding: 4rem 0;
 }
 
-/* Bouton de base */
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: white;
-  transform: translateY(-2px);
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
   }
+}
+
+/* From App.css */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.error-message {
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  border: 1px solid #ff6b6b;
+  border-radius: 8px;
+  background-color: #fff5f5;
+  color: #c92a2a;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.error-message h2 {
+  color: #c92a2a;
+  margin-bottom: 1rem;
+}
+
+main {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

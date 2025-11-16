@@ -1,9 +1,18 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+
+  # Don't rewrite calls to the API
+  RewriteRule ^api/ - [L]
+
+  # Don't rewrite the BUNDLE
+  RewriteRule ^static/ - [L]
+  RewriteRule ^media/ - [L]
+
+  # Don't rewrite files or directories
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-l
+
+  # Rewrite everything else to index.html to allow html5 state changes
   RewriteRule . /index.html [L]
 </IfModule>

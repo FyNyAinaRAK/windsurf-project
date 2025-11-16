@@ -3,13 +3,15 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  background-color: #f5f5f7;
 }
 
 .news-container h1 {
   text-align: center;
-  color: #2c3e50;
+  color: #1d1d1f;
   margin-bottom: 2rem;
   font-size: 2.5rem;
+  font-weight: 600;
 }
 
 .search-bar {
@@ -26,8 +28,8 @@
 .search-bar input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   padding-right: 2.5rem;
@@ -35,8 +37,8 @@
 
 .search-bar input:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(26, 54, 93, 0.2);
 }
 
 .search-loading {
@@ -44,19 +46,14 @@
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #7f8c8d;
+  color: #6e6e73;
   font-size: 0.875rem;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .search-results-count {
   text-align: center;
   margin: -1rem 0 1.5rem;
-  color: #7f8c8d;
-  font-style: italic;
+  color: #6e6e73;
 }
 
 .no-results {
@@ -153,9 +150,9 @@
 
 .news-card {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -164,7 +161,7 @@
 
 .news-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
 }
 
 .news-image {

@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { AnimatePresence, motion } from 'framer-motion';
 import AOS from 'aos';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -67,23 +67,25 @@ function App() {
       
       <main>
         <ErrorBoundary>
-          <Suspense fallback={<Loading />}>
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Home />} />
-              <Route path="/btp" element={<BTP />} />
-              <Route path="/transport" element={<Transport />} />
-              <Route path="/immobilier" element={<Immobilier />} />
-              <Route path="/communication" element={<Communication />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/security" element={<Security />} />
-              <Route path="/import-export" element={<ImportExport />} />
-              <Route path="/actualites" element={<News />} />
-              <Route path="/actualites/:slug" element={<NewsDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/a-propos" element={<About />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <AnimatePresence mode="wait">
+            <Suspense fallback={<Loading />}>
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Home /></motion.div>} />
+                <Route path="/btp" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><BTP /></motion.div>} />
+                <Route path="/transport" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Transport /></motion.div>} />
+                <Route path="/immobilier" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Immobilier /></motion.div>} />
+                <Route path="/communication" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Communication /></motion.div>} />
+                <Route path="/services" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Services /></motion.div>} />
+                <Route path="/security" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Security /></motion.div>} />
+                <Route path="/import-export" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><ImportExport /></motion.div>} />
+                <Route path="/actualites" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><News /></motion.div>} />
+                <Route path="/actualites/:slug" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><NewsDetail /></motion.div>} />
+                <Route path="/contact" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Contact /></motion.div>} />
+                <Route path="/a-propos" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><About /></motion.div>} />
+                <Route path="*" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><NotFound /></motion.div>} />
+              </Routes>
+            </Suspense>
+          </AnimatePresence>
         </ErrorBoundary>
       </main>
       

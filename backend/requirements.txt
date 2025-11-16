@@ -10,4 +10,3 @@ whitenoise==6.6.0
 gunicorn==21.2.0
 # Le pilote MySQL est requis pour le déploiement sur DirectAdmin,
 # même si d'autres environnements utilisent PostgreSQL.
-mysqlclient==2.2.0

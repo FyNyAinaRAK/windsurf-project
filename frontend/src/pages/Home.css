@@ -442,9 +442,18 @@ li {
 
 /* ===== Why Choose Us Section ===== */
 .why-choose-us {
-  background-color: #f5f5f7;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
   position: relative;
   overflow: hidden;
+  color: white;
+}
+
+.why-choose-us .section-subtitle,
+.why-choose-us .section-title {
+  color: white;
 }
 
 .tabs {

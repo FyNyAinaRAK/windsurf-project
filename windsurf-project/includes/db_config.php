@@ -1,6 +1,7 @@
 <?php
 // db_config.php
 
+define('BASE_URL', '/windsurf-project');
 define('DB_FILE', __DIR__ . '/../database.sqlite');
 
 function get_pdo() {

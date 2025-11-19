@@ -1,0 +1,9 @@
+# Fichiers de base de données
+*.sqlite
+*.sqlite3
+
+# Fichiers de log
+*.log
+
+# Fichiers de configuration locaux
+.env

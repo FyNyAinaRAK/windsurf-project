@@ -1,0 +1,38 @@
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Error State */
+.error-message {
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  border: 1px solid #ff6b6b;
+  border-radius: 8px;
+  background-color: #fff5f5;
+  color: #c92a2a;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.error-message h2 {
+  color: #c92a2a;
+  margin-bottom: 1rem;
+}
+
+/* Smooth page transitions */
+main {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
